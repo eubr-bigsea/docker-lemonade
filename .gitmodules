@@ -1,0 +1,15 @@
+[submodule "limonero"]
+	path = limonero
+	url = git@github.com:eubr-bigsea/limonero.git
+[submodule "ember-citron"]
+	path = ember-citron
+	url = git@github.com:eubr-bigsea/ember-citron.git
+[submodule "juicer"]
+	path = juicer
+	url = git@github.com:eubr-bigsea/juicer.git
+[submodule "tahiti"]
+	path = tahiti
+	url = git@github.com:eubr-bigsea/tahiti.git
+[submodule "torn"]
+	path = torn
+	url = git@github.com:eubr-bigsea/torn
