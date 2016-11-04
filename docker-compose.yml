@@ -1,0 +1,57 @@
+version: '2'
+services:
+  torn_db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - /var/run/mysqld/
+  tahiti_db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=tahiti
+  tahiti:
+    build: ./tahiti
+    links:
+      - tahiti_db:mysql
+    volumes:
+      - ./tahiti.json:/usr/src/app/tahiti.json
+    ports:
+      - '5055:5000'
+
+  limonero_db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=limonero
+  limonero:
+    build: ./limonero
+    links:
+      - limonero_db:mysql
+    volumes:
+      - ./limonero.json:/usr/src/app/limonero.json
+    ports:
+      - '5050:5000'
+
+  citron:
+    image: nginx
+    ports:
+      - '443:443'
+      - '80:80'
+    volumes:
+      - ./ember-citron/dist:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - torn
+
+  torn:
+    build: ./torn
+    environment:
+      - RAILS_CORS_ORIGINS=localhost:8080
+    volumes:
+      - ./database.yml:/usr/src/app/config/database.yml
+    volumes_from:
+      - torn_db
+    ports:
+      - '3000:3000'
