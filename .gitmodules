@@ -18,3 +18,11 @@
 	path = torn
 	url = git@github.com:eubr-bigsea/torn
 	branch = master
+[submodule "stand"]
+	path = stand
+	url = https://github.com/eubr-bigsea/stand.git
+	branch = master
+[submodule "caipirinha"]
+	path = caipirinha
+	url = https://github.com/eubr-bigsea/caipirinha.git
+	branch = master
