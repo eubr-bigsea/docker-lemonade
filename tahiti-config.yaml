@@ -1,0 +1,10 @@
+# Stand configuration file
+stand:
+    debug: true
+    servers:
+        database_url: mysql+pymysql://lemon:ju1c3@mysql3.ctweb.inweb.org.br:33060/lemonade
+        redis_url: redis://redis:6379
+    config:
+        SQLALCHEMY_POOL_SIZE: 10
+        SQLALCHEMY_POOL_RECYCLE: 240
+

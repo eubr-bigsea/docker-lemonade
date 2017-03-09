@@ -1,0 +1,14 @@
+# Stand configuration file
+stand:
+    debug: true
+    servers:
+        database_url: mysql+pymysql://lemon:ju1c3@mysql3.ctweb.inweb.org.br:33060/lemonade
+        redis_url: redis://redis:6379
+    services:
+        tahiti:
+            url: http://beta.ctweb.inweb.org.br/tahiti
+            auth_token: 123456
+    config:
+        SQLALCHEMY_POOL_SIZE: 10
+        SQLALCHEMY_POOL_RECYCLE: 240
+

@@ -1,0 +1,9 @@
+limonero:
+    port: 3321
+    environment: prod
+    servers:
+        database_url: mysql+pymysql://root:root@limonero_db:3306/limonero
+    services:
+    config:
+        SQLALCHEMY_POOL_SIZE: 0
+        SQLALCHEMY_POOL_RECYCLE: 60
