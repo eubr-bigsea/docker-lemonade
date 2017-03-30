@@ -1,20 +1,23 @@
 version: '2'
 services:
-
-  ### Limonero ###
-  limonero_db:
+  
+  ### Lemonade DB ##
+  lemonade_db:
     image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=limonero
+      - MYSQL_DATABASE=lemonade
+
+  ### Limonero ###
   limonero:
     build: ./limonero
     links:
-      - limonero_db:mysql
+      - lemonade_db:mysql
     volumes:
       - ./limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
+      - ./logging_config.ini:/logging_config.ini
     ports:
-      - '5000:5000'
+      - '5005:5000'
 
   ### Juicer ###
   juicer:
@@ -23,6 +26,7 @@ services:
     stdin_open: true
     volumes:
        - ./juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
+       - ./logging_config.ini:/logging_config.ini
 
   ### Stand ###
   stand:
@@ -31,8 +35,9 @@ services:
      stdin_open: true
      volumes:
         - ./stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
+        - ./logging_config.ini:/logging_config.ini
      ports:
-        - '5001:5000'
+        - '5006:5000'
   
   ### Caipirinha ###
   caipirinha:
@@ -41,8 +46,9 @@ services:
      stdin_open: true
      volumes:
         - ./caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
+        - ./logging_config.ini:/logging_config.ini
      ports:
-        - '5002:5000'
+        - '5007:5000'
 
   ### Tahiti ###
   tahiti:
@@ -51,24 +57,25 @@ services:
      stdin_open: true
      volumes:
         - ./tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
+        - ./logging_config.ini:/logging_config.ini
      ports:
-        - '5003:5000'
+        - '5008:5000'
 
-  ### Tahiti ###
-  torn_db:
+  ### Thorn ###
+  thorn_db:
      image: mysql
      environment:
         - MYSQL_ROOT_PASSWORD=root
      volumes:
         - /var/run/mysqld/
-  torn:
+  thorn:
      build: ./torn
      environment:
         - RAILS_CORS_ORIGINS=localhost:8080
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
      volumes_from:
-        - torn_db
+        - thorn_db
      ports:
         - '3000:3000'
   
@@ -82,7 +89,7 @@ services:
         - ./ember-citron/dist:/usr/share/nginx/html
         - ./nginx.conf:/etc/nginx/conf.d/default.conf
      links:
-        - torn
+        - thorn
 
   ### Redis ###
   redis:
