@@ -1,0 +1,19 @@
+# Juicer configuration file
+juicer:
+    debug: true
+    servers:
+        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        redis_url: redis://redis:6379
+    services:
+        tahiti:
+            url: http://tahiti:23403
+            auth_token: Wl1ba1j57f
+        limonero:
+            url: http://limonero:23402
+            auth_token: 7F6LVA18h8
+        caipirinha:
+            url: http://caipirinha:23401
+            auth_token: Z81D5te0w1
+            storage_id: 2
+    config:
+        tmp_dir: /tmp

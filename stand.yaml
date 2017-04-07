@@ -1,0 +1,16 @@
+# Stand configuration file
+stand:
+    debug: false
+    secret: sg7qS1ENqN
+    port: 23404
+    environment: prod
+    servers:
+        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        redis_url: redis://redis:6379
+    services:
+        thorn:
+            url: http://thorn:23405
+    config:
+        SQLALCHEMY_POOL_SIZE: 0
+        SQLALCHEMY_POOL_RECYCLE: 60
+
