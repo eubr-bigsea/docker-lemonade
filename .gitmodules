@@ -15,7 +15,7 @@
 	url = git@github.com:eubr-bigsea/tahiti.git
 	branch = master
 [submodule "thorn"]
-	path = torn
+	path = thorn
 	url = git@github.com:eubr-bigsea/thorn
 	branch = master
 [submodule "stand"]
