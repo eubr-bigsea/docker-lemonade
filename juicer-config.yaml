@@ -1,0 +1,12 @@
+juicer:
+   debug: true
+   servers:
+      redis_url: redis://redis:6379
+   services:
+      limonero:
+         url: http://beta.ctweb.inweb.org.br/limonero
+         auth_token: 123456
+      caipirinha:
+         url: http://caipirinha:3322
+         auth_token: 123456
+         storage_id: 2
