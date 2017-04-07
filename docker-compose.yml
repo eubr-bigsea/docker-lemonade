@@ -5,8 +5,8 @@ services:
   lemonade_db:
     image: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=lemonade
+      - MYSQL_ROOT_PASSWORD=lemon
+      - MYSQL_DATABASE=lemon
 
   ### Limonero ###
   limonero:
@@ -65,11 +65,11 @@ services:
   thorn_db:
      image: mysql
      environment:
-        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_ROOT_PASSWORD=lemon
      volumes:
         - /var/run/mysqld/
   thorn:
-     build: ./torn
+     build: ./thorn
      environment:
         - RAILS_CORS_ORIGINS=localhost:8080
      volumes:
