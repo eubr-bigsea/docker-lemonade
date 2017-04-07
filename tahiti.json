@@ -1,7 +1,0 @@
-{
-  "servers": {
-    "database_url": "mysql://root:root@mysql:3306/tahiti",
-    "environment": "dev"
-  }
-}
-
