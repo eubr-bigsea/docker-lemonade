@@ -2,7 +2,6 @@
 juicer:
     debug: true
     servers:
-        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
         redis_url: redis://redis:6379
     services:
         tahiti:

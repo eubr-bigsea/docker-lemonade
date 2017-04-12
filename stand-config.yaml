@@ -5,7 +5,7 @@ stand:
     port: 23404
     environment: prod
     servers:
-        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        database_url: mysql+pymysql://root:lemon@mysql/stand
         redis_url: redis://redis:6379
     services:
         thorn:

@@ -5,7 +5,7 @@ tahiti:
     secret: Wl1ba1j57f 
     port: 23403
     servers:
-        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        database_url: mysql+pymysql://root:lemon@mysql/tahiti
     services:
         thorn:
             url: http://thorn:23405

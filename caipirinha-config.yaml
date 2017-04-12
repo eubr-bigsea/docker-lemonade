@@ -6,7 +6,7 @@ caipirinha:
     storage_id: 2
     secret: Z81D5te0w1
     servers:
-        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        database_url: mysql+pymysql://root:lemon@mysql/caipirinha
     services:
         limonero:
             url: http://limonero:23402

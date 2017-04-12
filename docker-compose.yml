@@ -1,83 +1,121 @@
-version: '2'
+version: '2.1'
 services:
-  
   ### Lemonade DB ##
   lemonade_db:
     image: mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0 --bind-address=0.0.0.0
     environment:
       - MYSQL_ROOT_PASSWORD=lemon
-      - MYSQL_DATABASE=lemon
+    ports: 
+      - 33060:3306
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - /srv/lemonade/mysql:/var/lib/mysql
+    healthcheck:
+        test: ["CMD", "mysqladmin", "-u", "root", "-plemon", "status"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
 
   ### Limonero ###
   limonero:
     build: ./limonero
     links:
       - lemonade_db:mysql
+      - thorn:thorn
     volumes:
       - ./limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
-      - ./logging_config.ini:/logging_config.ini
+      - ./logging_config.ini:/usr/local/limonero/logging_config.ini
+      - /srv/lemonade/logs:/usr/local/limonero/logs/
     ports:
-      - '5005:5000'
+      - '23402:23402'
+    depends_on:
+        lemonade_db:
+            condition: service_healthy
 
   ### Juicer ###
   juicer:
     build: ./juicer
     tty: true
     stdin_open: true
+    links:
+      - stand
+      - limonero
+      - tahiti
+      - thorn
     volumes:
        - ./juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-       - ./logging_config.ini:/logging_config.ini
+       - ./logging_config.ini:/usr/local/juicer/logging_config.ini
+       - /srv/lemonade/logs:/usr/local/juicer/logs/
 
   ### Stand ###
   stand:
      build: ./stand
      tty: true
      stdin_open: true
+     links:
+      - lemonade_db:mysql
+      - thorn:thorn
      volumes:
-        - ./stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
-        - ./logging_config.ini:/logging_config.ini
+       - ./stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
+       - ./logging_config.ini:/usr/local/stand/logging_config.ini
+       - /srv/lemonade/logs:/usr/local/stand/logs/
      ports:
-        - '5006:5000'
+        - '23404:23404'
+     depends_on:
+        lemonade_db:
+            condition: service_healthy
   
   ### Caipirinha ###
   caipirinha:
-     build: ./stand
+     build: ./caipirinha
      tty: true
      stdin_open: true
+     links:
+      - lemonade_db:mysql
+      - thorn:thorn
      volumes:
-        - ./caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
-        - ./logging_config.ini:/logging_config.ini
+       - ./caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
+       - ./logging_config.ini:/usr/local/caipirinha/logging_config.ini
+       - /srv/lemonade/logs:/usr/local/caipirinha/logs/
      ports:
-        - '5007:5000'
+        - '23401:23401'
+     depends_on:
+        lemonade_db:
+            condition: service_healthy
 
   ### Tahiti ###
   tahiti:
      build: ./tahiti
      tty: true
      stdin_open: true
+     links:
+      - lemonade_db:mysql
+      - thorn:thorn
      volumes:
-        - ./tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
-        - ./logging_config.ini:/logging_config.ini
+       - ./tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
+       - ./logging_config.ini:/usr/local/tahiti/logging_config.ini
+       - /srv/lemonade/logs:/usr/local/tahiti/logs/
      ports:
-        - '5008:5000'
+        - '23403:23403'
+     depends_on:
+        lemonade_db:
+            condition: service_healthy
 
   ### Thorn ###
-  thorn_db:
-     image: mysql
-     environment:
-        - MYSQL_ROOT_PASSWORD=lemon
-     volumes:
-        - /var/run/mysqld/
   thorn:
      build: ./thorn
      environment:
         - RAILS_CORS_ORIGINS=localhost:8080
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
-     volumes_from:
-        - thorn_db
      ports:
         - '3000:3000'
+     links:
+        - lemonade_db:mysql
+     depends_on:
+        lemonade_db:
+            condition: service_healthy
   
   ### Citron ###
   citron:
@@ -89,7 +127,10 @@ services:
         - ./ember-citron/dist:/usr/share/nginx/html
         - ./nginx.conf:/etc/nginx/conf.d/default.conf
      links:
-        - thorn
+      - thorn
+      - limonero
+      - tahiti
+      - stand
 
   ### Redis ###
   redis:

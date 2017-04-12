@@ -3,20 +3,26 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password: root
-  #host: mysql
-  socket: /var/run/mysqld/mysqld.sock
+  password: lemon
+  host: mysql
+  #socket: /var/run/mysqld/mysqld.sock
 
 development:
   <<: *default
-  database: torn_development
+  database: thorn_development
 
 test:
   <<: *default
-  database: torn_test
+  database: thorn_test
 
 production:
   <<: *default
-  database: torn_production
+  database: thorn_production
   username: root
-  password: root
+  password: lemon
+
+docker:
+  <<: *default
+  database: thorn
+  username: root
+  password: lemon

@@ -5,7 +5,7 @@ limonero:
     port: 23402
     secret: 7F6LVA18h8
     servers:
-        database_url: mysql+pymysql://lemon:lemon@mysql/lemonade
+        database_url: mysql+pymysql://root:lemon@mysql/limonero
     services:
         thorn:
             url: http://thorn:23405
