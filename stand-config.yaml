@@ -1,7 +1,8 @@
 # Stand configuration file
 stand:
     debug: false
-    secret: sg7qS1ENqN
+    #secret: sg7qS1ENqN
+    secret: "123456"
     port: 23404
     environment: prod
     servers:
