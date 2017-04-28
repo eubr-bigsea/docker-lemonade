@@ -118,13 +118,12 @@ services:
             condition: service_healthy
   
   ### Citron ###
-  citron:
-     image: nginx
+  ember-citron:
+     build: ./ember-citron
      ports:
-        - '443:443'
-        - '80:80'
+        - '23400:8080'
      volumes:
-        - ./ember-citron/dist:/usr/share/nginx/html
+        - ./env.json:/usr/local/citron/dist/env.json
         - ./nginx.conf:/etc/nginx/conf.d/default.conf
      links:
       - thorn
