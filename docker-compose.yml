@@ -106,7 +106,7 @@ services:
   thorn:
      build: ./thorn
      environment:
-        - RAILS_CORS_ORIGINS=localhost:8080
+        - RAILS_CORS_ORIGINS=*
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
      ports:
