@@ -5,10 +5,10 @@ tahiti:
     secret: Wl1ba1j57f 
     port: 23403
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/tahiti
+        database_url: mysql+pymysql://root:lemon@mysql/tahiti?charset=utf8
     services:
         thorn:
-            url: http://thorn:23405
+            url: http://thorn:3000
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60

@@ -6,13 +6,13 @@ caipirinha:
     storage_id: 2
     secret: Z81D5te0w1
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/caipirinha
+        database_url: mysql+pymysql://root:lemon@mysql/caipirinha?charset=utf8
     services:
         limonero:
             url: http://limonero:23402
             auth_token: 7F6LVA18h8
         thorn:
-            url: http://thorn:23405
+            url: http://thorn:3000
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60

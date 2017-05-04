@@ -5,10 +5,10 @@ limonero:
     port: 23402
     secret: 7F6LVA18h8
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/limonero
+        database_url: mysql+pymysql://root:lemon@mysql/limonero?charset=utf8
     services:
         thorn:
-            url: http://thorn:23405
+            url: http://thorn:3000
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60
