@@ -16,3 +16,24 @@ juicer:
             storage_id: 2
     config:
         tmp_dir: /tmp
+    spark:
+        # For more information, see http://spark.apache.org/docs/latest/configuration.html
+        spark.executor.memory: 4g
+        spark.executor.cores: 3
+        spark.cores.max: 3
+        spark.driver.memory: 4g
+        # Allowed URLS: 
+        # local:                Run locally with 1 worker thread
+        # local[k]:             Run locally with k worker threads
+        # local[*]:             Run locally with as many worker threads as logical cores
+        # spark://host:port:    Connect to Spark standalone cluster (default port 7077)
+        # mesos://host:port:    Connect to Mesos cluster (default port 5050)
+        # yarn:                 Connect to Yarn cluster. Cluster location will be found based 
+        #                       on the HADOOP_CONF_DIR or YARN_CONF_DIR variable.
+        spark.master: local[*]
+
+        spark.localdir: /tmp
+        spark.submit.deployMode: client
+        spark.driver.extraClassPath: null
+        spark.executor.extraClassPath: null
+        spark.jars: null
