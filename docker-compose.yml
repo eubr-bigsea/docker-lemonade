@@ -38,6 +38,8 @@ services:
     build: ./juicer
     tty: true
     stdin_open: true
+    environment: 
+      - HADOOP_CONF_DIR=/usr/local/juicer/conf
     links:
       - stand
       - limonero
@@ -47,6 +49,7 @@ services:
        - ./juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
        - ./logging_config.ini:/usr/local/juicer/logging_config.ini
        - /srv/lemonade/logs:/usr/local/juicer/logs/
+       - ./extras/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
 
   ### Stand ###
   stand:
