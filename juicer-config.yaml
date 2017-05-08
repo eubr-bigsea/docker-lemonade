@@ -16,7 +16,6 @@ juicer:
             storage_id: 2
     config:
         tmp_dir: /tmp
-
     spark:
         # For more information, see http://spark.apache.org/docs/latest/configuration.html
         spark.executor.memory: 4g
