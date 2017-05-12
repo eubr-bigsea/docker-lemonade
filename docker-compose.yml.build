@@ -19,7 +19,7 @@ services:
 
   ### Limonero ###
   limonero:
-    image: eubrabigsea/limonero
+    build: ./limonero
     links:
       - lemonade_db:mysql
       - thorn:thorn
@@ -35,11 +35,9 @@ services:
 
   ### Juicer ###
   juicer:
-    image: eubrabigsea/juicer
+    build: ./juicer
     tty: true
     stdin_open: true
-    environment: 
-      - HADOOP_CONF_DIR=/usr/local/juicer/conf
     links:
       - stand
       - limonero
@@ -49,11 +47,10 @@ services:
        - ./juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
        - ./logging_config.ini:/usr/local/juicer/logging_config.ini
        - /srv/lemonade/logs:/usr/local/juicer/logs/
-       - ./extras/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
 
   ### Stand ###
   stand:
-     image: eubrabigsea/stand
+     build: ./stand
      tty: true
      stdin_open: true
      links:
@@ -71,7 +68,7 @@ services:
 
   ### Caipirinha ###
   caipirinha:
-     image: eubrabigsea/caipirinha
+     build: ./caipirinha
      tty: true
      stdin_open: true
      links:
@@ -89,7 +86,7 @@ services:
 
   ### Tahiti ###
   tahiti:
-     image: eubrabigsea/tahiti
+     build: ./tahiti
      tty: true
      stdin_open: true
      links:
@@ -107,7 +104,7 @@ services:
 
   ### Thorn ###
   thorn:
-     image: eubrabigsea/thorn
+     build: ./thorn
      environment:
         - RAILS_CORS_ORIGINS=*
      volumes:
@@ -122,7 +119,7 @@ services:
 
   ### Citron ###
   ember-citron:
-     image: eubrabigsea/ember-citron
+     build: ./ember-citron
      ports:
         - '23400:8080'
      volumes:
