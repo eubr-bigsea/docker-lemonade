@@ -118,8 +118,8 @@ services:
             condition: service_healthy
 
   ### Citron ###
-  ember-citron:
-     build: ./ember-citron
+  citron:
+     build: ./citron
      ports:
         - '23400:8080'
      volumes:
