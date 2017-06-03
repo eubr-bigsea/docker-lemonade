@@ -3,7 +3,7 @@
 	url = git@github.com:eubr-bigsea/limonero.git
 	branch = master
 [submodule "ember-citron"]
-	path = ember-citron
+	path = citron
 	url = git@github.com:eubr-bigsea/ember-citron.git
 	branch = master
 [submodule "juicer"]
