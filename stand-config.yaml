@@ -14,4 +14,5 @@ stand:
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60
+        TRAP_BAD_REQUEST_ERRORS: true
 

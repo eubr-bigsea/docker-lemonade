@@ -4,13 +4,15 @@ caipirinha:
     environment: prod
     port: 23401
     storage_id: 2
-    secret: Z81D5te0w1
+    #secret: Z81D5te0w1
+    secret: 123456
     servers:
         database_url: mysql+pymysql://root:lemon@mysql/caipirinha?charset=utf8
     services:
         limonero:
             url: http://limonero:23402
-            auth_token: 7F6LVA18h8
+            #auth_token: 7F6LVA18h8
+            auth_token: 123456
         thorn:
             url: http://thorn:3000
     config:
