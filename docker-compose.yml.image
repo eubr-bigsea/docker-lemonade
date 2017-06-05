@@ -118,8 +118,8 @@ services:
             condition: service_healthy
 
   ### Citron ###
-  ember-citron:
-     image: eubrabigsea/ember-citron
+  citron:
+     image: eubrabigsea/citron
      ports:
         - '23400:8080'
      volumes:
