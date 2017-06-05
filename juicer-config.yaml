@@ -6,13 +6,17 @@ juicer:
     services:
         tahiti:
             url: http://tahiti:23403
-            auth_token: Wl1ba1j57f
+            #auth_token: Wl1ba1j57f
+            auth_token: '123456'
         limonero:
-            url: http://limonero:23402
-            auth_token: 7F6LVA18h8
+            url: http://beta.ctweb.inweb.org.br/limonero #http://limonero:23402
+            #url: http://limonero:23402
+            #auth_token: 7F6LVA18h8
+            auth_token: '123456'
         caipirinha:
             url: http://caipirinha:23401
-            auth_token: Z81D5te0w1
+            # auth_token: Z81D5te0w1
+            auth_token: '123456'
             storage_id: 2
     config:
         tmp_dir: /tmp
@@ -33,7 +37,7 @@ juicer:
         spark.master: local[*]
 
         spark.localdir: /tmp
-        spark.submit.deployMode: client
+        # spark.submit.deployMode: client
         spark.driver.extraClassPath: null
         spark.executor.extraClassPath: null
         spark.jars: null
