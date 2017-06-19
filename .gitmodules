@@ -4,7 +4,7 @@
 	branch = master
 [submodule "ember-citron"]
 	path = citron
-	url = git@github.com:eubr-bigsea/ember-citron.git
+	url = git@github.com:eubr-bigsea/citron.git
 	branch = master
 [submodule "juicer"]
 	path = juicer

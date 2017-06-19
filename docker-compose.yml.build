@@ -30,6 +30,8 @@ services:
     depends_on:
         lemonade_db:
             condition: service_healthy
+    environment: 
+      - HADOOP_CONF_DIR=/usr/local/juicer/conf
 
   ### Juicer ###
   juicer:
