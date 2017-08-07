@@ -41,3 +41,6 @@ juicer:
         spark.driver.extraClassPath: null
         spark.executor.extraClassPath: null
         spark.jars: null
+        spark.eventLog.enabled: true
+        spark.eventLog.dir: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events 
+        #spark.history.fs.logDirectory: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events
