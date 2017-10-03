@@ -1,5 +1,14 @@
 version: '2.1'
 services:
+  ### Spark extensions ###
+  lemonade-spark-ext:
+    image: maven:3.2-jdk-8
+    # command: mvn clean package
+    command: mvn -f /usr/src/app/pom.xml package
+    volumes:
+      - /scratch/projetos/mvn/.m2:/root/.m2
+      - ./lemonade-spark-ext:/usr/src/app
+
   ### Lemonade DB ##
   lemonade_db:
     image: mysql
@@ -50,6 +59,8 @@ services:
        - ./logging_config.ini:/usr/local/juicer/logging_config.ini
        - /srv/lemonade/logs:/usr/local/juicer/logs/
        - ./extras/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+       - /mnt/cephfs/lemonade/dev:/scratch
+       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
 
   ### Stand ###
   stand:
@@ -104,6 +115,9 @@ services:
      build: ./thorn
      environment:
         - RAILS_CORS_ORIGINS=*
+        - LEMONADE_ENV=dev.ctweb.inweb.org.br
+        - EMAIL_PROVIDER_USERNAME=lemonade.suporte
+        - EMAIL_PROVIDER_PASSWORD=zooropa2017
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
      links:

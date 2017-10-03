@@ -9,9 +9,11 @@ juicer:
             #auth_token: Wl1ba1j57f
             auth_token: '123456'
         limonero:
-            url: http://beta.ctweb.inweb.org.br/limonero #http://limonero:23402
-            #url: http://limonero:23402
+            url: http://limonero:23402
             #auth_token: 7F6LVA18h8
+            auth_token: '123456'
+        stand:
+            url: http://stand:23404
             auth_token: '123456'
         caipirinha:
             url: http://caipirinha:23401
@@ -38,9 +40,8 @@ juicer:
 
         spark.localdir: /tmp
         # spark.submit.deployMode: client
-        spark.driver.extraClassPath: null
-        spark.executor.extraClassPath: null
-        spark.jars: null
         spark.eventLog.enabled: true
         spark.eventLog.dir: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events 
         #spark.history.fs.logDirectory: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events
+        spark.driver.extraClassPath:                                                                                                                                                                                                          
+            "/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar"
