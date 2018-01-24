@@ -7,10 +7,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=lemon
     ports:
-      - 33062:3306
+      - 33061:3306
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - /srv/lemonade/mysql:/var/lib/mysql
+      - /srv/lemonade/mysql-stage:/var/lib/mysql
     healthcheck:
         test: ["CMD", "mysqladmin", "-u", "root", "-plemon", "status"]
         interval: 30s
@@ -23,6 +23,8 @@ services:
     links:
       - lemonade_db:mysql
       - thorn:thorn
+    environment: 
+      - HADOOP_CONF_DIR=/usr/local/juicer/conf
     volumes:
       - ./limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
       - ./logging_config.ini:/usr/local/limonero/logging_config.ini
@@ -104,6 +106,9 @@ services:
      image: eubrabigsea/thorn
      environment:
         - RAILS_CORS_ORIGINS=*
+        - LEMONADE_ENV=teste.ctweb.inweb.org.br
+        - EMAIL_PROVIDER_USERNAME=lemonade.suporte
+        - EMAIL_PROVIDER_PASSWORD=zooropa2017
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
      ports:

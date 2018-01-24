@@ -1,5 +1,14 @@
 version: '2.1'
 services:
+  ### Spark extensions ###
+  lemonade-spark-ext:
+    image: maven:3.2-jdk-8
+    # command: mvn clean package
+    command: mvn -f /usr/src/app/pom.xml package
+    volumes:
+      - /scratch/projetos/mvn/.m2:/root/.m2
+      - ./lemonade-spark-ext:/usr/src/app
+
   ### Lemonade DB ##
   lemonade_db:
     image: mysql
@@ -7,10 +16,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=lemon
     ports: 
-      - 33062:3306
+      - 33061:3306
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - /srv/lemonade/mysql-dev:/var/lib/mysql
+      - /srv/lemonade/mysql-stage:/var/lib/mysql
     healthcheck:
         test: ["CMD", "mysqladmin", "-u", "root", "-plemon", "status"]
         interval: 30s
@@ -30,6 +39,8 @@ services:
     depends_on:
         lemonade_db:
             condition: service_healthy
+    environment: 
+      - HADOOP_CONF_DIR=/usr/local/juicer/conf
 
   ### Juicer ###
   juicer:
@@ -48,6 +59,8 @@ services:
        - ./logging_config.ini:/usr/local/juicer/logging_config.ini
        - /srv/lemonade/logs:/usr/local/juicer/logs/
        - ./extras/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+       - /mnt/cephfs/lemonade/dev:/scratch
+       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
 
   ### Stand ###
   stand:
@@ -102,8 +115,13 @@ services:
      build: ./thorn
      environment:
         - RAILS_CORS_ORIGINS=*
+        - LEMONADE_ENV=teste.ctweb.inweb.org.br
+        - EMAIL_PROVIDER_USERNAME=lemonade.suporte
+        - EMAIL_PROVIDER_PASSWORD=zooropa2017
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
+     ports:
+        - 3000:3000
      links:
         - lemonade_db:mysql
      depends_on:
@@ -114,7 +132,7 @@ services:
   citron:
      build: ./citron
      ports:
-        - '23456:8080'
+        - '23450:8080'
      volumes:
         - ./env.json:/usr/local/citron/dist/env.json
         - ./nginx.conf:/etc/nginx/conf.d/default.conf
