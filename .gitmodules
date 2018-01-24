@@ -4,7 +4,7 @@
 	branch = master
 [submodule "ember-citron"]
 	path = citron
-	url = git@github.com:eubr-bigsea/ember-citron.git
+	url = git@github.com:eubr-bigsea/citron.git
 	branch = master
 [submodule "juicer"]
 	path = juicer
@@ -26,3 +26,10 @@
 	path = caipirinha
 	url = https://github.com/eubr-bigsea/caipirinha.git
 	branch = master
+[submodule "lemoande-spark-ext"]
+	path = lemonade-spark-ext
+	url = git@github.com:eubr-bigsea/lemonade-spark-ext.git
+	branch = master
+[submodule "lemonade-spark-ext"]
+	path = lemonade-spark-ext
+	url = git@github.com:eubr-bigsea/lemonade-spark-ext.git

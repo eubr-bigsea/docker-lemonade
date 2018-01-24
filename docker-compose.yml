@@ -106,6 +106,9 @@ services:
      image: eubrabigsea/thorn
      environment:
         - RAILS_CORS_ORIGINS=*
+        - LEMONADE_ENV=teste.ctweb.inweb.org.br
+        - EMAIL_PROVIDER_USERNAME=lemonade.suporte
+        - EMAIL_PROVIDER_PASSWORD=zooropa2017
      volumes:
         - ./database.yml:/usr/src/app/config/database.yml
      ports:
