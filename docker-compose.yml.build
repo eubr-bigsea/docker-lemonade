@@ -54,6 +54,9 @@ services:
       - limonero
       - tahiti
       - thorn
+    ports:
+       - 37100-37400:37100-37400
+       - 4040-4099:4040-4099
     volumes:
        - ./juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
        - ./logging_config.ini:/usr/local/juicer/logging_config.ini
