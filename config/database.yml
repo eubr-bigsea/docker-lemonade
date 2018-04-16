@@ -1,0 +1,13 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password: lemon
+  host: mysql
+
+docker:
+  <<: *default
+  database: thorn
+  username: root
+  password: lemon
