@@ -1,6 +1,11 @@
 # Juicer configuration file
 juicer:
     debug: true
+    minion:
+        terminate_after_run: false
+        libprocess_port_range: [37100, 37199]
+        libprocess_advertise_ip: 150.164.203.89
+        port_offset: 100
     servers:
         redis_url: redis://redis:6379
     services:
@@ -24,10 +29,10 @@ juicer:
         tmp_dir: /tmp
     spark:
         # For more information, see http://spark.apache.org/docs/latest/configuration.html
-        spark.executor.memory: 4g
-        spark.executor.cores: 3
-        spark.cores.max: 3
-        spark.driver.memory: 4g
+        # spark.executor.memory: 4g
+        # spark.executor.cores: 3
+        # spark.cores.max: 3
+        # spark.driver.memory: 4g
         # Allowed URLS:
         # local:                Run locally with 1 worker thread
         # local[k]:             Run locally with k worker threads
@@ -37,11 +42,29 @@ juicer:
         # yarn:                 Connect to Yarn cluster. Cluster location will be found based
         #                       on the HADOOP_CONF_DIR or YARN_CONF_DIR variable.
         spark.master: local[*]
+        # spark.master: spark://lemonade1:7077
+
+        # Required in order to connect nodes to driver.
+        # In more restrictive network configuration, 
+        # other ports can be configured.
+        # In more restrictive network configuration, 
+        # other ports can be configured.
+        spark.driver.host: stage.ctweb.inweb.org.br
+        spark.driver.bindAddress: 0.0.0.0
+        # spark.driver.port: 37301
+        spark.port.maxRetries: 200
+        spark.broadcast.factory: org.apache.spark.broadcast.HttpBroadcastFactory
+        # spark.blockManager.port: 35360 
+        spark.mesos.executor.home: /opt/spark-2.2.1-bin-hadoop2.6
+        spark.mesos.rejectOfferDuration: 30s
+        spark.dynamicAllocation.enabled: true
+        spark.shuffle.service.enabled: true
+
 
         spark.localdir: /tmp
         # spark.submit.deployMode: client
         spark.eventLog.enabled: true
         spark.eventLog.dir: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events 
-        #spark.history.fs.logDirectory: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events
+        spark.history.fs.logDirectory: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events
         spark.driver.extraClassPath:                                                                                                                                                                                                          
             "/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar"

@@ -11,6 +11,7 @@ limonero:
         thorn:
             url: http://thorn:3000
     config:
-        SQLALCHEMY_POOL_SIZE: 0
-        SQLALCHEMY_POOL_RECYCLE: 60
+        SQLALCHEMY_POOL_SIZE: 40
+        SQLALCHEMY_POOL_RECYCLE: 300
+        dfs.client.use.datanode.hostname: true
 
