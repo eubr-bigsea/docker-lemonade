@@ -1,25 +1,44 @@
 Docker Lemonade
 ===============
 
-Project for runnig Lemonade's projects all together
+Project for running Lemonade's projects all together
 
-Preparing to build
----------------
+Clone and go into directory
 ```
 git clone git@github.com:eubr-bigsea/docker-lemonade.git
 cd docker-lemonade
+
+```
+
+Running docker hub available containers
+-------
+```
+docker-compose pull
+docker-compose up -d --no-build
+```
+Wait all services to go up and access http://localhost:23450
+
+
+Building containers from projects
+---------------
+```
 git submodule init
 git submodule update --remote
+docker-compose up -d --build
 ```
 
-Building and running
+Using swarm
+-----------
+```
+docker stack deploy -c docker-stack.yml lemonade
+
+```
+
+Troubleshooting
 ---------------
-
+### UnixHTTPConnectionPool ... Read timed out
+Set the following environment variables and run compose up again
 ```
-docker-compose up
-```
-
-Running on detached mode:
-```
-docker-compose up -d
+export DOCKER_CLIENT_TIMEOUT=120
+export COMPOSE_HTTP_TIMEOUT=120
 ```
