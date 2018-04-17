@@ -1,0 +1,41 @@
+language: bash
+cache: pip
+git:
+  submodules: false
+  depth: 1
+env:
+  global:
+  - OS_PROJECT_DOMAIN_NAME=default
+  - OS_USER_DOMAIN_NAME=default
+  - OS_IDENTITY_API_VERSION=3
+  - OS_AUTH_STRATEGY=keystone
+  - OS_REGION_NAME=RegionOne
+  - STACK_NAME=lemonstack-$TRAVIS_PULL_REQUEST_BRANCH-$TRAVIS_BUILD_NUMBER
+  - DEPLOY_KEY=$HOME/id_rsa
+  matrix:
+  - DOCKER_COMPOSE_METHOD=build
+#  - DOCKER_COMPOSE_METHOD=pull
+
+before_install:
+  - pip install --user python-openstackclient python-heatclient python-keystoneclient &>> /dev/null
+  - openstack --version
+
+install: true
+
+script:
+  -  openstack stack create
+     --wait
+     --template extras/docker_swarm_os.hot.yaml
+     --parameter git_ref=$TRAVIS_PULL_REQUEST_BRANCH
+     --parameter travis_build_number=$TRAVIS_BUILD_NUMBER
+     $STACK_NAME
+  - DEPLOY_SERVER=`openstack stack output show $STACK_NAME public_ip -f value -c output_value`
+  - openstack stack output show $STACK_NAME ssh_private_key -f value -c output_value > $DEPLOY_KEY
+
+deploy:
+  provider: script
+  script: bash extras/openstack_deploy
+
+notifications:
+  slack:
+    on_failure: never
