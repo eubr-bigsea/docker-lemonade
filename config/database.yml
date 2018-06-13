@@ -2,12 +2,10 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password: lemon
-  host: mysql
 
 docker:
   <<: *default
+  host: mysql
   database: thorn
   username: root
   password: lemon
