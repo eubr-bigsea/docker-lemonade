@@ -55,7 +55,6 @@ parameters:
     label: Image
     description: Image to be used for all servers in this stack
     default: ubuntu1604
-
 resources:
   docker_master_port:
     type: OS::Neutron::Port
@@ -76,6 +75,11 @@ resources:
             "%git_ref%": { get_param: git_ref }
             "%tbn%":     { get_param: travis_build_number }
       size: 40
+  volume_attach:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: docker_volume }
+      instance_uuid: { get_resource: docker_volume }     
   docker_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
