@@ -34,9 +34,16 @@ parameters:
     description: UUID of private network into which servers get deployed
     default: 9ccdffa9-949e-44ae-ad31-fe6ef56ae1f7
   
-  test_volume:
+  volume_id:
     type: string
-    description: Name of volume
+    label: ID of volume to be attached
+    description: The UUID for attaching a existent Cinder volume
+    default: ""
+
+  volume_size:
+    type: number
+    description: The size of the new Cinder volume
+    default: 1
 
   instance_flavor:
     type: string
@@ -55,6 +62,10 @@ parameters:
     label: Image
     description: Image to be used for all servers in this stack
     default: ubuntu1604
+
+conditions:
+  new_volume: {equals: [{get_param: volume_id}, ""]}
+
 resources:
   docker_master_port:
     type: OS::Neutron::Port
@@ -63,23 +74,30 @@ resources:
       fixed_ips:
         - subnet_id: { get_param: private_subnet_id }
       security_groups: [{ get_resource: docker_security_group }]
-  docker_volume:
+    
+  volume_create:
     type: OS::Cinder::Volume
+    deletion_policy: Retain
+    condition: new_volume
     properties:
-      description: 'Test volume'
-      image: { get_param: instance_image }
-      name:
-        str_replace:
-          template: lemonkey-%git_ref%-%tbn%
-          params:
-            "%git_ref%": { get_param: git_ref }
-            "%tbn%":     { get_param: travis_build_number }
-      size: 40
-  volume_attach:
+      size: { get_param: volume_size }
+  
+  volume_attach_new:
     type: OS::Cinder::VolumeAttachment
+    condition: new_volume
     properties:
-      volume_id: { get_resource: docker_volume }
-      instance_uuid: { get_resource: docker_volume }     
+      volume_id: { get_resource: volume_create }
+      instance_uuid: { get_resource: docker_master }
+      mountpoint: /dev/vdb
+  
+  volume_attach_old:
+    type: OS::Cinder::VolumeAttachment
+    condition: {not:  new_volume}
+    properties:
+      volume_id: { get_param: volume_id }
+      instance_uuid: { get_resource: docker_master }
+      mountpoint: /dev/vdb
+
   docker_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -95,7 +113,7 @@ resources:
           template: lemonsecgrp-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     { get_param: travis_build_number }
+            "%tbn%":     3
 
       rules:
         - remote_ip_prefix: 0.0.0.0/0
@@ -137,7 +155,7 @@ resources:
           template: lemonkey-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     { get_param: travis_build_number }
+            "%tbn%":     3
       save_private_key: true
 
   docker_master:
@@ -148,7 +166,7 @@ resources:
           template: lemonmaster-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     { get_param: travis_build_number }
+            "%tbn%":     3
       image: { get_param: instance_image }
       flavor: { get_param: instance_flavor }
       key_name: { get_resource: ssh_key }
