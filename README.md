@@ -24,6 +24,8 @@ Building containers from projects
 ```
 git submodule init
 git submodule update --remote
+docker-compose up -d mysql redis
+# wait a little bit
 docker-compose up -d --build
 ```
 
