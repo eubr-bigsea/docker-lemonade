@@ -9,7 +9,7 @@
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git
-	branch = master
+	branch = ci_cd_automation
 [submodule "tahiti"]
 	path = tahiti
 	url = https://github.com/eubr-bigsea/tahiti.git
