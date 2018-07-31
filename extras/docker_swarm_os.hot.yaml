@@ -113,7 +113,7 @@ resources:
           template: lemonsecgrp-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     3
+            "%tbn%":     { get_param: travis_build_number }
 
       rules:
         - remote_ip_prefix: 0.0.0.0/0
@@ -155,7 +155,7 @@ resources:
           template: lemonkey-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     3
+            "%tbn%":     { get_param: travis_build_number }
       save_private_key: true
 
   docker_master:
@@ -166,7 +166,7 @@ resources:
           template: lemonmaster-%git_ref%-%tbn%
           params:
             "%git_ref%": { get_param: git_ref }
-            "%tbn%":     3
+            "%tbn%":     { get_param: travis_build_number }
       image: { get_param: instance_image }
       flavor: { get_param: instance_flavor }
       key_name: { get_resource: ssh_key }
