@@ -80,6 +80,9 @@ services:
     networks:
       - default
     restart: always
+    # Uncomment next lines if you are connecting to an external spark cluster
+    #ports:
+    #  - '37100-37399:37100-37399'
 
   citron:
     build: ./citron
@@ -94,6 +97,3 @@ services:
 
 networks:
   default:
-
-#logging:
-#  driver: syslog

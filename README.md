@@ -36,6 +36,27 @@ docker stack deploy -c docker-stack.yml lemonade
 
 ```
 
+Using remote spark cluster
+--------------------------
+Update the following lines in `config/juicer-config.yaml` with your own data
+```
+libprocess_advertise_ip: 127.0.0.1
+spark.driver.host: your.hostname
+```
+To allow the connection it is needed to uncomment the lines bellow in
+`docker-compose.yml` file
+```
+ports:
+  - '37100-37399:37100-37399'
+```
+If you want to use spark envent log edit the following lines in
+`config/juicer-config.yaml`
+```
+spark.eventLog.enabled: false
+spark.eventLog.dir: hdfs://<namenode>:9000/path
+spark.history.fs.logDirectory: hdfs://<namenode>:9000/path
+```
+
 Troubleshooting
 ---------------
 ### UnixHTTPConnectionPool ... Read timed out

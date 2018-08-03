@@ -4,25 +4,23 @@ juicer:
     minion:
         terminate_after_run: false
         libprocess_port_range: [37100, 37199]
-        libprocess_advertise_ip: 150.164.203.89
+        # IP address that will be advertised to the outside world for communication to and from libprocess
+        libprocess_advertise_ip: 127.0.0.1
         port_offset: 100
     servers:
         redis_url: redis://redis:6379
     services:
         tahiti:
             url: http://tahiti:23403
-            #auth_token: Wl1ba1j57f
             auth_token: '123456'
         limonero:
             url: http://limonero:23402
-            #auth_token: 7F6LVA18h8
             auth_token: '123456'
         stand:
             url: http://stand:23404
             auth_token: '123456'
         caipirinha:
             url: http://caipirinha:23401
-            # auth_token: Z81D5te0w1
             auth_token: '123456'
             storage_id: 2
     config:
@@ -42,29 +40,24 @@ juicer:
         # yarn:                 Connect to Yarn cluster. Cluster location will be found based
         #                       on the HADOOP_CONF_DIR or YARN_CONF_DIR variable.
         spark.master: local[*]
-        # spark.master: spark://lemonade1:7077
 
         # Required in order to connect nodes to driver.
         # In more restrictive network configuration, 
         # other ports can be configured.
         # In more restrictive network configuration, 
         # other ports can be configured.
-        spark.driver.host: stage.ctweb.inweb.org.br
+        spark.driver.host: your.hostname
         spark.driver.bindAddress: 0.0.0.0
-        # spark.driver.port: 37301
         spark.port.maxRetries: 200
         spark.broadcast.factory: org.apache.spark.broadcast.HttpBroadcastFactory
-        # spark.blockManager.port: 35360 
-        spark.mesos.executor.home: /opt/spark-2.2.1-bin-hadoop2.6
+        spark.mesos.executor.home: /opt/spark-2.3.1-bin-hadoop2.7
         spark.mesos.rejectOfferDuration: 30s
         spark.dynamicAllocation.enabled: true
         spark.shuffle.service.enabled: true
 
 
         spark.localdir: /tmp
-        # spark.submit.deployMode: client
-        spark.eventLog.enabled: true
-        spark.eventLog.dir: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events 
-        spark.history.fs.logDirectory: hdfs://spark01.ctweb.inweb.org.br:9000/lemonade-spark-events
-        spark.driver.extraClassPath:                                                                                                                                                                                                          
-            "/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar"
+        spark.eventLog.enabled: false
+        spark.eventLog.dir: hdfs://<namenode>:9000/path 
+        spark.history.fs.logDirectory: hdfs://<namenode>:9000/path
+        spark.driver.extraClassPath: "/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar"
