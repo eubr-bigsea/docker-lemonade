@@ -1,0 +1,209 @@
+heat_template_version: 2017-09-01
+
+description: Deploys a Docker Swarm
+
+parameters:
+  git_ref:
+    type: string
+    label: Git commit or branch
+    description: Which branch docker-lemonade repository should checkout
+    default: master
+
+  travis_build_number:
+    type: string
+    label: Travis build number
+    description: The number of the current build
+    default: 00
+    immutable: true
+
+  public_net_id:
+    type: string
+    label: Public Network UUID
+    description: UUID of public network from which floating IP addresses will be allocated
+    default: 7c043a0a-5b7f-44df-bdf2-c3f9c85b32ac
+
+  private_net_id:
+    type: string
+    label: Private Network UUID
+    description: UUID of private network into which servers get deployed
+    default: cfd56e26-db76-42d7-bc79-3344c6017fd8
+
+  private_subnet_id:
+    type: string
+    label: Private Network UUID
+    description: UUID of private network into which servers get deployed
+    default: 9ccdffa9-949e-44ae-ad31-fe6ef56ae1f7
+  
+  volume_id:
+    type: string
+    label: ID of volume to be attached
+    description: The UUID for attaching a existent Cinder volume
+    default: ""
+
+  volume_size:
+    type: number
+    description: The size of the new Cinder volume
+    default: 1
+
+  instance_flavor:
+    type: string
+    label: Flavor
+    description: Flavor to use for Docker
+    default: m1.medium
+    constraints:
+    - allowed_values:
+      - m1.small
+      - m1.medium
+      - m1.large
+      - m1.xlarge
+
+  instance_image:
+    type: string
+    label: Image
+    description: Image to be used for all servers in this stack
+    default: ubuntu1604
+
+conditions:
+  new_volume: {equals: [{get_param: volume_id}, ""]}
+
+resources:
+  docker_master_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_param: private_net_id }
+      fixed_ips:
+        - subnet_id: { get_param: private_subnet_id }
+      security_groups: [{ get_resource: docker_security_group }]
+    
+  volume_create:
+    type: OS::Cinder::Volume
+    deletion_policy: Retain
+    condition: new_volume
+    properties:
+      size: { get_param: volume_size }
+  
+  volume_attach_new:
+    type: OS::Cinder::VolumeAttachment
+    condition: new_volume
+    properties:
+      volume_id: { get_resource: volume_create }
+      instance_uuid: { get_resource: docker_master }
+      mountpoint: /dev/vdb
+  
+  volume_attach_old:
+    type: OS::Cinder::VolumeAttachment
+    condition: {not:  new_volume}
+    properties:
+      volume_id: { get_param: volume_id }
+      instance_uuid: { get_resource: docker_master }
+      mountpoint: /dev/vdb
+
+  docker_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net_id }
+      port_id: { get_resource: docker_master_port }
+
+  docker_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description:
+      name:
+        str_replace:
+          template: lemonsecgrp-%git_ref%-%tbn%
+          params:
+            "%git_ref%": { get_param: git_ref }
+            "%tbn%":     { get_param: travis_build_number }
+
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 2377
+          port_range_max: 2377
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 23450
+          port_range_max: 23450
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 80
+          port_range_max: 80
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 443
+          port_range_max: 443
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+        - remote_mode: remote_group_id
+          protocol: tcp
+          port_range_min: 1
+          port_range_max: 65535
+        - remote_mode: remote_group_id
+          protocol: udp
+          port_range_min: 1
+          port_range_max: 65535
+
+  ssh_key:
+    type: OS::Nova::KeyPair
+    properties:
+      name:
+        str_replace:
+          template: lemonkey-%git_ref%-%tbn%
+          params:
+            "%git_ref%": { get_param: git_ref }
+            "%tbn%":     { get_param: travis_build_number }
+      save_private_key: true
+
+  docker_master:
+    type: OS::Nova::Server
+    properties:
+      name:
+        str_replace:
+          template: lemonmaster-%git_ref%-%tbn%
+          params:
+            "%git_ref%": { get_param: git_ref }
+            "%tbn%":     { get_param: travis_build_number }
+      image: { get_param: instance_image }
+      flavor: { get_param: instance_flavor }
+      key_name: { get_resource: ssh_key }
+      networks:
+        - port: { get_resource: docker_master_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+            apt-get update
+            #apt-get -y upgrade
+            curl -fsSL get.docker.com | bash -
+            # docker swarm init --listen-addr 0.0.0.0:2377
+
+            curl -L \
+              https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) \
+              -o /usr/local/bin/docker-compose && \
+            chmod +x /usr/local/bin/docker-compose
+
+            usermod -aG docker ubuntu
+
+            git clone -b %git_ref% --single-branch --depth 1 \
+              https://github.com/eubr-bigsea/docker-lemonade.git  /srv/docker-lemonade
+
+            chown ubuntu:ubuntu -R /srv/docker-lemonade
+            cd /srv/docker-lemonade
+            git submodule init
+            git submodule update
+
+            docker-compose up -d
+          params:
+            "%git_ref%": { get_param: git_ref }
+outputs:
+  public_ip:
+    description: Master Public IP
+    value: { get_attr: [ docker_floating_ip, floating_ip_address ] }
+  ssh_private_key:
+    description: SSH Private Key
+    value: { get_attr: [ ssh_key, private_key ] }

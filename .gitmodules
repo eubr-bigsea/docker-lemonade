@@ -1,22 +1,22 @@
 [submodule "limonero"]
 	path = limonero
-	url = git@github.com:eubr-bigsea/limonero.git
+	url = https://github.com/eubr-bigsea/limonero.git
 	branch = master
-[submodule "ember-citron"]
+[submodule "citron"]
 	path = citron
-	url = git@github.com:eubr-bigsea/citron.git
+	url = https://github.com/eubr-bigsea/citron.git
 	branch = master
 [submodule "juicer"]
 	path = juicer
-	url = git@github.com:eubr-bigsea/juicer.git
+	url = https://github.com/eubr-bigsea/juicer.git
 	branch = master
 [submodule "tahiti"]
 	path = tahiti
-	url = git@github.com:eubr-bigsea/tahiti.git
+	url = https://github.com/eubr-bigsea/tahiti.git
 	branch = master
 [submodule "thorn"]
 	path = thorn
-	url = git@github.com:eubr-bigsea/thorn
+	url = https://github.com/eubr-bigsea/thorn
 	branch = master
 [submodule "stand"]
 	path = stand
@@ -28,8 +28,8 @@
 	branch = master
 [submodule "lemoande-spark-ext"]
 	path = lemonade-spark-ext
-	url = git@github.com:eubr-bigsea/lemonade-spark-ext.git
+	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
 	branch = master
 [submodule "lemonade-spark-ext"]
 	path = lemonade-spark-ext
-	url = git@github.com:eubr-bigsea/lemonade-spark-ext.git
+	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git

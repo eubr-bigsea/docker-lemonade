@@ -3,7 +3,6 @@ limonero:
     debug: false
     environment: prod
     port: 23402
-    #secret: 7F6LVA18h8
     secret: 123456
     servers:
         database_url: mysql+pymysql://root:lemon@mysql/limonero?charset=utf8
@@ -11,6 +10,7 @@ limonero:
         thorn:
             url: http://thorn:3000
     config:
-        SQLALCHEMY_POOL_SIZE: 0
-        SQLALCHEMY_POOL_RECYCLE: 60
+        SQLALCHEMY_POOL_SIZE: 40
+        SQLALCHEMY_POOL_RECYCLE: 300
+        dfs.client.use.datanode.hostname: true
 

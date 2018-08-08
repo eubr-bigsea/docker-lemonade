@@ -1,0 +1,24 @@
+language: bash
+cache: pip
+git:
+  submodules: false
+  depth: 1
+env:
+  global:
+  - STACK_NAME=lemonstack-${TRAVIS_PULL_REQUEST_BRANCH}-${TRAVIS_BUILD_NUMBER}
+
+before_install:
+  - pip install --user -I
+      python-openstackclient
+      python-heatclient
+      python-keystoneclient &>> /dev/null
+  - openstack --version
+
+install: true
+
+script: bash extras/create_environment.sh
+after_failure: openstack stack delete --wait ${STACK_NAME}
+
+notifications:
+  slack:
+    on_failure: never

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/
+
+usage() {
+  echo "This script configures an host network interface directly on container"
+  echo ""
+  echo "Usage: `basename $0` -i <HOST_IF> -c <CONTAINER_NAME>"
+  exit 1
+}
+
+while getopts ":i:c:" opt; do
+  case $opt in
+    i)
+      HOST_IF=${OPTARG}
+      #Check if interface exists
+      ip link show ${HOST_IF} 1> /dev/null  || usage
+      ;;
+    c)
+      CONTAINER_NAME=${OPTARG}
+      CONTAINER_PID=$(docker inspect --format '{{ .State.Pid }}' ${CONTAINER_NAME})
+
+      #Check if container pid is not null
+      [ -n ${CONTAINER_PID} ] || usage
+
+      CONTAINER_IF="docker${CONTAINER_PID}"
+      ;;
+
+    \? ) echo "Unknown option: -$OPTARG" >&2; usage ;;
+    :  ) echo "Missing option argument for -$OPTARG" >&2; usage ;;
+    *  ) usage ;;
+  esac
+done
+
+# Check required values
+[ -z ${HOST_IF} ] && usage
+[ -z ${CONTAINER_NAME} ] && usage
+
+# Create a macvlan interface associated with host physical interface
+ip link add ${CONTAINER_IF} link ${HOST_IF} type macvlan mode bridge
+
+# Add this interface to the container's network namespace
+ip link set netns ${CONTAINER_PID} ${CONTAINER_IF}
+
+# Bring up link
+nsenter -t ${CONTAINER_PID} -n ip link set ${CONTAINER_IF} up
+
+# Acquired an address using DHCP
+nsenter -t ${CONTAINER_PID} -n -- dhclient -d ${CONTAINER_IF}
