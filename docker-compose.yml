@@ -38,6 +38,7 @@ services:
     image: eubrabigsea/limonero
     volumes:
       - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
+      - /srv/lemonade/storage:/srv/storage
     networks:
       - default
     restart: always
@@ -77,6 +78,7 @@ services:
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
       - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - /srv/lemonade/storage:/srv/storage
     networks:
       - default
     restart: always
