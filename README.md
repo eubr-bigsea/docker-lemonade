@@ -22,8 +22,7 @@ Wait all services to go up and access http://localhost:23450
 Building containers from projects
 ---------------
 ```
-git submodule init
-git submodule update --remote
+git submodule update --init --checkout
 docker-compose up -d mysql redis
 # wait a little bit
 docker-compose up -d --build
