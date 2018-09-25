@@ -1,0 +1,12 @@
+deploy:
+  tags:
+    - development
+  script:
+    - cd /srv/docker-lemonade
+    - git pull
+    - docker-compose up -d --build
+  environment:
+    name: development
+    url: http://http://dev.lemonade.org.br/
+  only:
+    - master
