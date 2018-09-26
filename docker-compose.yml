@@ -70,6 +70,13 @@ services:
       - default
     restart: always
 
+  lemonade-spark-ext:
+    image: maven:3.2-jdk-8
+    command: mvn -f /usr/src/app/pom.xml package
+    volumes:
+      - /scratch/projetos/mvn/.m2:/root/.m2
+      - ./lemonade-spark-ext:/usr/src/app
+
   juicer:
     build: ./juicer
     image: eubrabigsea/juicer
@@ -78,13 +85,11 @@ services:
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
       - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
       - /srv/lemonade/storage:/srv/storage
     networks:
       - default
     restart: always
-    # Uncomment next lines if you are connecting to an external spark cluster
-    #ports:
-    #  - '37100-37399:37100-37399'
 
   citron:
     build: ./citron
