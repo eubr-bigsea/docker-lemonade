@@ -2,7 +2,7 @@
 tahiti:
     debug: false
     environment: prod
-    secret: Wl1ba1j57f 
+    secret: 123456
     port: 23403
     servers:
         database_url: mysql+pymysql://root:lemon@mysql/tahiti?charset=utf8
