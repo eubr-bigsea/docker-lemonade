@@ -10,11 +10,13 @@ services:
       - MYSQL_ROOT_PASSWORD=lemon
     volumes:
       - ./extras/initdb.d:/docker-entrypoint-initdb.d
-      - /srv/lemonade/mysql:/var/lib/mysql
+      - /srv/lemonade/mysql-dev:/var/lib/mysql
     networks:
       default:
         aliases: [lemonade_db, db]
     restart: on-failure
+    ports:
+    - 33062:3306
 
   redis:
     image: redis:4
@@ -86,11 +88,11 @@ services:
     #ports:
     #  - '37100-37399:37100-37399'
 
-  citron:
-    build: ./citron
-    image: eubrabigsea/citron
+  citrus:
+    build: ./citrus
+    image: eubrabigsea/citrus
     ports:
-      - '23450:8080'
+      - '23456:8080'
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
