@@ -9,6 +9,10 @@ git clone git@github.com:eubr-bigsea/docker-lemonade.git
 cd docker-lemonade
 
 ```
+Update project dependencies:
+```
+git submodule update --init --checkout
+```
 
 Running docker hub available containers
 -------
