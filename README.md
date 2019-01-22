@@ -72,6 +72,15 @@ mysql> INSERT INTO storage(id, name, type, url, enabled) VALUES (2, 'HDFS cluste
 ```
 The `url` column must be a valid HDFS URL and the cluster must be accessible from the containers. 
 
+Directories in the host machine
+-------------------------------
+
+By default, Lemonade will create 2 directories in the host machine, under the parent dir `/srv`: 
+- `/srv/lemonade/mysql-dev`, for the MySql database;
+- `/srv/lemonade/storage` for HDFS local file system.
+
+You can change these configurations in the `docker-compose.yaml` file.
+
 Troubleshooting
 ---------------
 ### UnixHTTPConnectionPool ... Read timed out
