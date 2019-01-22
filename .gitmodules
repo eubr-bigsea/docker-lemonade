@@ -2,10 +2,6 @@
 	path = limonero
 	url = https://github.com/eubr-bigsea/limonero.git
 	branch = master
-[submodule "citron"]
-	path = citron
-	url = https://github.com/eubr-bigsea/citron.git
-	branch = master
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git
@@ -33,3 +29,6 @@
 [submodule "lemonade-spark-ext"]
 	path = lemonade-spark-ext
 	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
+[submodule "citrus"]
+	path = citrus
+	url = git@github.com:eubr-bigsea/citrus.git
