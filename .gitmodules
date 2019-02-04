@@ -26,9 +26,7 @@
 	path = lemonade-spark-ext
 	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
 	branch = master
-[submodule "lemonade-spark-ext"]
-	path = lemonade-spark-ext
-	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
 [submodule "citrus"]
 	path = citrus
-	url = git@github.com:eubr-bigsea/citrus.git
+	url = https://github.com/eubr-bigsea/citrus.git
+	branch = master
