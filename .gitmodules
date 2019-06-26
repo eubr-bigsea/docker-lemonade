@@ -30,3 +30,6 @@
 	path = citrus
 	url = https://github.com/eubr-bigsea/citrus.git
 	branch = master
+[submodule "seed"]
+	path = seed
+	url = https://github.com/eubr-bigsea/seed.git

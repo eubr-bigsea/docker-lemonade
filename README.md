@@ -74,16 +74,22 @@ A user interface is under progress. If you want to use a HDFS cluster, you need 
 % sudo docker-compose exec mysql mysql -u root -plemon limonero
 mysql> INSERT INTO storage(id, name, type, url, enabled) VALUES (2, 'HDFS cluster', 'HDFS', 'hdfs://hdfs-server:9000', 1);
 ```
-The `url` column must be a valid HDFS URL and the cluster must be accessible from the containers. 
+The `url` column must be a valid HDFS URL and the cluster must be accessible from the containers.
 
 Directories in the host machine
 -------------------------------
 
-By default, Lemonade will create 2 directories in the host machine, under the parent dir `/srv`: 
+By default, Lemonade will create 2 directories in the host machine, under the parent dir `/srv`:
 - `/srv/lemonade/mysql-dev`, for the MySql database;
 - `/srv/lemonade/storage` for HDFS local file system.
 
 You can change these configurations in the `docker-compose.yaml` file.
+
+
+DockerHub autobuild containers configuration
+--------------------------------------------
+* [Link GitHub and DockerHub](https://docs.docker.com/docker-hub/builds/link-source/)
+* [Set up Automated builds](https://docs.docker.com/docker-hub/builds/)
 
 Troubleshooting
 ---------------
