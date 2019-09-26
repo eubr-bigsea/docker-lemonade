@@ -3,7 +3,7 @@ seed:
     debug: false
     environment: prod
     context: demo.ctweb.inweb.org.br
-    port: 3326
+    port: 23405
     secret: 123456    
     deployment_port_range: [35000-39999]
     servers:
