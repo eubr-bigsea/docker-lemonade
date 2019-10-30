@@ -33,3 +33,7 @@
 [submodule "seed"]
 	path = seed
 	url = https://github.com/eubr-bigsea/seed.git
+[submodule "spark-fairness"]
+	path = spark-fairness
+	url = https://github.com/eubr-atmosphere/spark-fairness.git
+	branch = master
