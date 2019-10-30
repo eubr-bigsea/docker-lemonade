@@ -87,6 +87,7 @@ services:
       - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
+      - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
     networks:
       - default
     restart: always
