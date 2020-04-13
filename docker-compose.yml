@@ -29,7 +29,7 @@ services:
     image: eubrabigsea/thorn
     environment:
       - RAILS_CORS_ORIGINS=*
-      - LEMONADE_ENV=dev.ctweb.inweb.org.br
+      - LEMONADE_ENV=http://dev.ctweb.inweb.org.br
       - EMAIL_PROVIDER_USERNAME=lemonade.suporte
       - EMAIL_PROVIDER_PASSWORD=sp33d@3019
       - DEVISE_JWT_SECRET_KEY=98c1e17b0c3d2d8ccf480a3794e47afd7348d865a6f6e97eb0010e795e62
