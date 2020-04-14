@@ -3,7 +3,6 @@ caipirinha:
     debug: false
     environment: prod
     port: 23401
-    storage_id: 2
     secret: 123456
     servers:
         database_url: mysql+pymysql://root:lemon@mysql/caipirinha?charset=utf8

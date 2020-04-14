@@ -27,14 +27,8 @@ services:
   thorn:
     build: ./thorn
     image: eubrabigsea/thorn
-    environment:
-      - RAILS_CORS_ORIGINS=*
-      - LEMONADE_ENV=http://dev.ctweb.inweb.org.br
-      - EMAIL_PROVIDER_USERNAME=lemonade.suporte
-      - EMAIL_PROVIDER_PASSWORD=sp33d@3019
-      - DEVISE_JWT_SECRET_KEY=98c1e17b0c3d2d8ccf480a3794e47afd7348d865a6f6e97eb0010e795e62
     volumes:
-      - ./config/database.yml:/usr/src/app/config/database.yml
+      - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
     networks:
       - default
     restart: always
@@ -105,28 +99,28 @@ services:
     networks:
       - default
     restart: always
-  seed:
-    build: ./seed
-    image: eubrabigsea/seed
-    volumes:
-      - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-    networks:
-      - default
-    restart: always
-
-  seed_worker:
-    build: ./seed
-    image: eubrabigsea/seed
-    entrypoint: 
-      - "/usr/bin/dumb-init"
-      - "--"
-      - "/usr/local/bin/entrypoint"
-      - "worker"
-    volumes:
-      - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-    networks:
-      - default
-    restart: always
+#   seed:
+#     build: ./seed
+#     image: eubrabigsea/seed
+#     volumes:
+#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+#     networks:
+#       - default
+#     restart: always
+# 
+#   seed_worker:
+#     build: ./seed
+#     image: eubrabigsea/seed
+#     entrypoint: 
+#       - "/usr/bin/dumb-init"
+#       - "--"
+#       - "/usr/local/bin/entrypoint"
+#       - "worker"
+#     volumes:
+#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+#     networks:
+#       - default
+#     restart: always
 
 networks:
   default:

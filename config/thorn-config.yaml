@@ -1,0 +1,23 @@
+# Thorn configuration file
+thorn:
+    debug: true
+    environment: prod
+    port: 23400
+    secret: 123456
+    providers:
+    - thorn
+    - ldap
+    servers:
+        database_url: mysql+pymysql://root:lemon@mysql/thorn2?charset=utf8
+        redis_url: redis://redis:6379/1
+    services:
+    config:
+        SQLALCHEMY_POOL_SIZE: 0
+        SQLALCHEMY_POOL_RECYCLE: 60
+        RQ_QUEUES: ['thorn']
+    unprotected_urls:
+        /api/v1/thorn/auth/login: ['POST']
+        /api/v1/thorn/register: ['POST']
+        /api/v1/thorn/password/reset: ['PATCH', 'POST', 'GET']
+        /api/v1/thorn/tokens: []
+
