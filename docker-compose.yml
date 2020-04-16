@@ -33,6 +33,20 @@ services:
       - default
     restart: always
 
+  thorn_worker:
+    build: ./thorn
+    image: eubrabigsea/thorn
+    entrypoint: 
+      - "/usr/bin/dumb-init"
+      - "--"
+      - "/usr/local/bin/entrypoint"
+      - "worker"
+    volumes:
+      - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
+    networks:
+      - default
+    restart: always
+
   limonero:
     build: ./limonero
     image: eubrabigsea/limonero
