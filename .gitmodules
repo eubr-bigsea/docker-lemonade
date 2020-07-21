@@ -5,11 +5,11 @@
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git
-	branch = master
+	branch = develop
 [submodule "tahiti"]
 	path = tahiti
 	url = https://github.com/eubr-bigsea/tahiti.git
-	branch = master
+	branch = develop
 [submodule "thorn"]
 	path = thorn
 	url = https://github.com/eubr-bigsea/thorn
@@ -22,14 +22,14 @@
 	path = caipirinha
 	url = https://github.com/eubr-bigsea/caipirinha.git
 	branch = master
-[submodule "lemoande-spark-ext"]
+[submodule "lemonade-spark-ext"]
 	path = lemonade-spark-ext
 	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
 	branch = master
 [submodule "citrus"]
 	path = citrus
 	url = https://github.com/eubr-bigsea/citrus.git
-	branch = master
+	branch = develop
 [submodule "seed"]
 	path = seed
 	url = https://github.com/eubr-bigsea/seed.git
