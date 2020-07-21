@@ -37,3 +37,7 @@
 	path = spark-fairness
 	url = https://github.com/eubr-atmosphere/spark-fairness.git
 	branch = master
+[submodule "P01"]
+	path = P01
+	url = https://github.com/MPMG-DCC-UFMG/P01.git
+	branch = master
