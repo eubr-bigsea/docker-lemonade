@@ -1,7 +1,7 @@
 [submodule "limonero"]
 	path = limonero
 	url = https://github.com/eubr-bigsea/limonero.git
-	branch = master
+	branch = develop
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git

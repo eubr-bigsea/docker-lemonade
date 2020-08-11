@@ -1,8 +1,8 @@
 # Thorn configuration file
 thorn:
     debug: true
-    environment: prod
-    port: 23400
+    environment: dev
+    port: 23454
     secret: 123456
     providers:
     - thorn
