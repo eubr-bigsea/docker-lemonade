@@ -96,13 +96,26 @@ services:
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
       - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
-      - ./juicer/juicer:/usr/local/juicer/juicer
     networks:
       - default
     restart: always
     # Uncomment next lines if you are connecting to an external spark cluster
     #ports:
     #  - '37100-37399:37100-37399'
+  juicer_worker:
+    build: ./juicer
+    image: eubrabigsea/juicer
+    entrypoint:
+      - "rq"
+      - "worker"
+      - "-v"
+      - "--url"
+      - "redis://localhost"
+    volumes:
+      - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
+    networks:
+      - default
+    restart: always
 
   citrus:
     build: ./citrus
