@@ -13,7 +13,3 @@ caipirinha:
             auth_token: 123456
         thorn:
             url: http://thorn:3000
-    config:
-        SQLALCHEMY_POOL_SIZE: 0
-        SQLALCHEMY_POOL_RECYCLE: 60
-

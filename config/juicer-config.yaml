@@ -47,7 +47,7 @@ juicer:
         # other ports can be configured.
         # In more restrictive network configuration, 
         # other ports can be configured.
-        spark.driver.host: your.hostname
+        # spark.driver.host: your.hostname
         spark.driver.bindAddress: 0.0.0.0
         spark.port.maxRetries: 200
         spark.broadcast.factory: org.apache.spark.broadcast.HttpBroadcastFactory
