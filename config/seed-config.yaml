@@ -14,5 +14,3 @@ seed:
             url: http://thorn:3000
             token: '123456'
     config:
-        SQLALCHEMY_POOL_SIZE: 100
-        SQLALCHEMY_POOL_RECYCLE: 600
