@@ -26,7 +26,7 @@ services:
 
   thorn:
     build: ./thorn
-    image: eubrabigsea/thorn
+    image: eubrabigsea/thorn:next
     volumes:
       - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
     networks:
@@ -35,7 +35,7 @@ services:
 
   thorn_worker:
     build: ./thorn
-    image: eubrabigsea/thorn
+    image: eubrabigsea/thorn:next
     entrypoint: 
       - "/usr/bin/dumb-init"
       - "--"
@@ -49,9 +49,9 @@ services:
 
   limonero:
     build: ./limonero
-    image: eubrabigsea/limonero
     environment:
       - HADOOP_USER_NAME=hadoop
+    image: eubrabigsea/limonero:next
     volumes:
       - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
       - /srv/lemonade/storage:/srv/storage
@@ -61,7 +61,7 @@ services:
 
   stand:
     build: ./stand
-    image: eubrabigsea/stand
+    image: eubrabigsea/stand:next
     volumes:
       - ./config/stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
     networks:
@@ -70,7 +70,7 @@ services:
 
   caipirinha:
     build: ./caipirinha
-    image: eubrabigsea/caipirinha
+    image: eubrabigsea/caipirinha:next
     volumes:
       - ./config/caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
     networks:
@@ -79,7 +79,7 @@ services:
 
   tahiti:
     build: ./tahiti
-    image: eubrabigsea/tahiti
+    image: eubrabigsea/tahiti:next
     volumes:
       - ./config/tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
     networks:
@@ -88,7 +88,7 @@ services:
 
   juicer:
     build: ./juicer
-    image: eubrabigsea/juicer
+    image: eubrabigsea/juicer:next
     environment:
       - HADOOP_USER_NAME=hadoop
       - PYSPARK_PYTHON=python3
@@ -112,7 +112,7 @@ services:
 
   citrus:
     build: ./citrus
-    image: eubrabigsea/citrus
+    image: eubrabigsea/citrus:next
     ports:
       - '23456:8080'
     volumes:
@@ -122,7 +122,7 @@ services:
     restart: always
 #   seed:
 #     build: ./seed
-#     image: eubrabigsea/seed
+#     image: eubrabigsea/seed:next
 #     volumes:
 #       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
 #     networks:
@@ -131,7 +131,7 @@ services:
 # 
 #   seed_worker:
 #     build: ./seed
-#     image: eubrabigsea/seed
+#     image: eubrabigsea/seed:next
 #     entrypoint: 
 #       - "/usr/bin/dumb-init"
 #       - "--"
