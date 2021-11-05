@@ -113,28 +113,28 @@ services:
     networks:
       - default
     restart: always
-#   seed:
-#     build: ./seed
-#     image: eubrabigsea/seed:next
-#     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-#     networks:
-#       - default
-#     restart: always
-# 
-#   seed_worker:
-#     build: ./seed
-#     image: eubrabigsea/seed:next
-#     entrypoint: 
-#       - "/usr/bin/dumb-init"
-#       - "--"
-#       - "/usr/local/bin/entrypoint"
-#       - "worker"
-#     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-#     networks:
-#       - default
-#     restart: always
+  seed:
+    build: ./seed
+    image: eubrabigsea/seed:next
+    volumes:
+      - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+    networks:
+      - default
+    restart: always
+ 
+  seed_worker:
+    build: ./seed
+    image: eubrabigsea/seed:next
+    entrypoint: 
+      - "/usr/bin/dumb-init"
+      - "--"
+      - "/usr/local/bin/entrypoint"
+      - "worker"
+    volumes:
+      - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+    networks:
+      - default
+    restart: always
 
 networks:
   default:
