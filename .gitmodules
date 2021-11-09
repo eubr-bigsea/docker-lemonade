@@ -1,40 +1,40 @@
 [submodule "limonero"]
 	path = limonero
 	url = https://github.com/eubr-bigsea/limonero.git
-	branch = v2.0
+	branch = next
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git
-	branch = v2.0
+	branch = next
 [submodule "tahiti"]
 	path = tahiti
 	url = https://github.com/eubr-bigsea/tahiti.git
-	branch = v2.0
+	branch = next
 [submodule "thorn"]
 	path = thorn
 	url = https://github.com/eubr-bigsea/thorn
-	branch = v2.0
+	branch = next
 [submodule "stand"]
 	path = stand
 	url = https://github.com/eubr-bigsea/stand.git
-	branch = v2.0
+	branch = next
 [submodule "caipirinha"]
 	path = caipirinha
 	url = https://github.com/eubr-bigsea/caipirinha.git
-	branch = v2.0
+	branch = next
 [submodule "lemoande-spark-ext"]
 	path = lemonade-spark-ext
 	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
-	branch = v2.0
+	branch = next
 [submodule "citrus"]
 	path = citrus
 	url = https://github.com/eubr-bigsea/citrus.git
-	branch = v2.0
+	branch = next
 [submodule "seed"]
 	path = seed
 	url = https://github.com/eubr-bigsea/seed.git
-	branch = v2.0
+	branch = next
 [submodule "spark-fairness"]
 	path = spark-fairness
 	url = https://github.com/eubr-atmosphere/spark-fairness.git
-	branch = v2.0
+	branch = next
