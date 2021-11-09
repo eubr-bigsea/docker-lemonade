@@ -49,6 +49,8 @@ services:
 
   limonero:
     build: ./limonero
+    environment:
+      - HADOOP_USER_NAME=hadoop
     image: eubrabigsea/limonero:next
     volumes:
       - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
@@ -88,20 +90,25 @@ services:
     build: ./juicer
     image: eubrabigsea/juicer:next
     environment:
+      - HADOOP_USER_NAME=hadoop
+      - PYSPARK_PYTHON=python3
       - HADOOP_CONF_DIR=/usr/local/juicer/conf
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-      - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/core-site.xml:/usr/local/juicer/conf/core-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/yarn-site.xml:/usr/local/juicer/conf/yarn-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
-      - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
+        #- ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
     networks:
       - default
     restart: always
     # Uncomment next lines if you are connecting to an external spark cluster
-    #ports:
-    #  - '37100-37399:37100-37399'
+    ports:
+      # - '37100-37300:37100-37300'
+      - '35100-35300:35100-35300'  
 
   citrus:
     build: ./citrus
@@ -138,3 +145,4 @@ services:
 
 networks:
   default:
+          
