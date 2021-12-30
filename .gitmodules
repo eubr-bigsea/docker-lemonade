@@ -1,39 +1,40 @@
 [submodule "limonero"]
 	path = limonero
 	url = https://github.com/eubr-bigsea/limonero.git
-	branch = develop
+	tag = 2.3.0
 [submodule "juicer"]
 	path = juicer
 	url = https://github.com/eubr-bigsea/juicer.git
-	branch = develop
+	tag = 2.3.0
 [submodule "tahiti"]
 	path = tahiti
 	url = https://github.com/eubr-bigsea/tahiti.git
-	branch = develop
+	tag = 2.3.0
 [submodule "thorn"]
 	path = thorn
 	url = https://github.com/eubr-bigsea/thorn
-	branch = develop
+	tag = 2.3.0
 [submodule "stand"]
 	path = stand
 	url = https://github.com/eubr-bigsea/stand.git
-	branch = develop
+	tag = 2.3.0
 [submodule "caipirinha"]
 	path = caipirinha
 	url = https://github.com/eubr-bigsea/caipirinha.git
-	branch = develop
-[submodule "lemoande-spark-ext"]
-	path = lemonade-spark-ext
-	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
-	branch = develop
+	tag = 2.3.0
 [submodule "citrus"]
 	path = citrus
 	url = https://github.com/eubr-bigsea/citrus.git
-	branch = develop
+	tag = 2.3.0
 [submodule "seed"]
 	path = seed
 	url = https://github.com/eubr-bigsea/seed.git
-[submodule "spark-fairness"]
-	path = spark-fairness
-	url = https://github.com/eubr-atmosphere/spark-fairness.git
-	branch = develop
+	tag = 2.3.0
+# [submodule "spark-fairness"]
+# 	path = spark-fairness
+# 	url = https://github.com/eubr-atmosphere/spark-fairness.git
+# 	tag = 2.3.0
+# [submodule "lemoande-spark-ext"]
+# 	path = lemonade-spark-ext
+# 	url = https://github.com/eubr-bigsea/lemonade-spark-ext.git
+# 	tag = 2.3.0

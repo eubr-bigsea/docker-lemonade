@@ -8,8 +8,6 @@ stand:
         database_url: mysql+pymysql://root:lemon@mysql/stand?charset=utf8
         redis_url: redis://redis:6379
     services:
-        thorn:
-            url: http://thorn:3000
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60

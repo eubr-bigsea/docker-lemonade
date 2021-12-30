@@ -7,8 +7,6 @@ limonero:
     servers:
         database_url: mysql+pymysql://root:lemon@mysql/limonero?charset=utf8
     services:
-        thorn:
-            url: http://thorn:3000
     config:
         SQLALCHEMY_POOL_SIZE: 40
         SQLALCHEMY_POOL_RECYCLE: 300
