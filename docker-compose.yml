@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
 
   mysql:
@@ -9,8 +9,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=lemon
     volumes:
-      - ./extras/initdb.d:/docker-entrypoint-initdb.d
-      - /srv/lemonade/mysql-dev:/var/lib/mysql
+      - type: bind
+        source: ./extras/initdb.d
+        target: /docker-entrypoint-initdb.d
+      - type: bind
+        source: /srv/lemonade/mysql-dev
+        target: /var/lib/mysql
     networks:
       default:
         aliases: [lemonade_db, db]
@@ -28,7 +32,9 @@ services:
     build: ./thorn
     image: eubrabigsea/thorn
     volumes:
-      - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
+      - type: bind 
+        source: ./config/thorn-config.yaml
+        target: /usr/local/thorn/conf/thorn-config.yaml
     networks:
       - default
     restart: always
@@ -42,7 +48,9 @@ services:
       - "/usr/local/bin/entrypoint"
       - "worker"
     volumes:
-      - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
+      - type: bind 
+        source: ./config/thorn-config.yaml
+        target: /usr/local/thorn/conf/thorn-config.yaml
     networks:
       - default
     restart: always
@@ -51,8 +59,12 @@ services:
     build: ./limonero
     image: eubrabigsea/limonero
     volumes:
-      - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
-      - /srv/lemonade/storage:/srv/storage
+      - type: bind
+        source: ./config/limonero-config.yaml
+        target: /usr/local/limonero/conf/limonero-config.yaml
+      - type: bind
+        source: /srv/lemonade/storage
+        target: /srv/storage
     networks:
       - default
     restart: always
@@ -61,7 +73,9 @@ services:
     build: ./stand
     image: eubrabigsea/stand
     volumes:
-      - ./config/stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
+      - type: bind 
+        source: ./config/stand-config.yaml
+        target: /usr/local/stand/conf/stand-config.yaml
     networks:
       - default
     restart: always
@@ -70,7 +84,9 @@ services:
     build: ./caipirinha
     image: eubrabigsea/caipirinha
     volumes:
-      - ./config/caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
+      - type: bind
+        source: ./config/caipirinha-config.yaml
+        target: /usr/local/caipirinha/conf/caipirinha-config.yaml
     networks:
       - default
     restart: always
@@ -79,7 +95,9 @@ services:
     build: ./tahiti
     image: eubrabigsea/tahiti
     volumes:
-      - ./config/tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
+      - type: bind 
+        source: ./config/tahiti-config.yaml
+        target: /usr/local/tahiti/conf/tahiti-config.yaml
     networks:
       - default
     restart: always
@@ -91,11 +109,21 @@ services:
       - HADOOP_CONF_DIR=/usr/local/juicer/conf
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
     volumes:
-      - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-      - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
-      - /srv/lemonade/storage:/srv/storage
-      - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
-      - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
+      - type: bind
+        source: ./config/juicer-config.yaml
+        target: /usr/local/juicer/conf/juicer-config.yaml
+      - type: bind
+        source: ./config/hdfs-site.xml
+        target: /usr/local/juicer/conf/hdfs-site.xml
+      - type: bind
+        source: /srv/lemonade/storage
+        target: /srv/storage
+      - type: bind
+        source: ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar
+        target: /usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
+      - type: bind
+        source: ./spark-fairness/target/spark-fairness_2.11-1.0.jar
+        target: /usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
     networks:
       - default
     restart: always
@@ -109,7 +137,9 @@ services:
     ports:
       - '23456:8080'
     volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - type: bind 
+        source: ./config/nginx.conf
+        target: /etc/nginx/conf.d/default.conf
     networks:
       - default
     restart: always
@@ -117,7 +147,9 @@ services:
 #     build: ./seed
 #     image: eubrabigsea/seed
 #     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+#       - type: bind 
+#         source: ./config/seed-config.yaml
+#         target: /usr/local/seed/conf/seed.yaml
 #     networks:
 #       - default
 #     restart: always
@@ -131,7 +163,9 @@ services:
 #       - "/usr/local/bin/entrypoint"
 #       - "worker"
 #     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
+#       - type: bind
+#         source: ./config/seed-config.yaml
+#         target: /usr/local/seed/conf/seed.yaml
 #     networks:
 #       - default
 #     restart: always
