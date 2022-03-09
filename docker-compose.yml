@@ -26,7 +26,7 @@ services:
 
   thorn:
     build: ./thorn
-    image: eubrabigsea/thorn:2.0
+    image: eubrabigsea/thorn:2.4.0
     volumes:
       - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
     networks:
@@ -35,7 +35,7 @@ services:
 
   thorn_worker:
     build: ./thorn
-    image: eubrabigsea/thorn:2.0
+    image: eubrabigsea/thorn:2.4.0
     entrypoint: 
       - "/usr/bin/dumb-init"
       - "--"
@@ -49,7 +49,9 @@ services:
 
   limonero:
     build: ./limonero
-    image: eubrabigsea/limonero:2.0
+    image: eubrabigsea/limonero:2.4.0
+    environment:
+      - HADOOP_USER_NAME=hadoop
     volumes:
       - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
       - /srv/lemonade/storage:/srv/storage
@@ -59,7 +61,7 @@ services:
 
   stand:
     build: ./stand
-    image: eubrabigsea/stand:2.0
+    image: eubrabigsea/stand:2.4.0
     volumes:
       - ./config/stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
     networks:
@@ -68,7 +70,7 @@ services:
 
   caipirinha:
     build: ./caipirinha
-    image: eubrabigsea/caipirinha:2.0
+    image: eubrabigsea/caipirinha:2.4.0
     volumes:
       - ./config/caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
     networks:
@@ -77,7 +79,7 @@ services:
 
   tahiti:
     build: ./tahiti
-    image: eubrabigsea/tahiti:2.0
+    image: eubrabigsea/tahiti:2.4.0
     volumes:
       - ./config/tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
     networks:
@@ -86,13 +88,17 @@ services:
 
   juicer:
     build: ./juicer
-    image: eubrabigsea/juicer:2.0
+    image: eubrabigsea/juicer:2.4.0
     environment:
+      - HADOOP_USER_NAME=hadoop
+      - PYSPARK_PYTHON=python3
       - HADOOP_CONF_DIR=/usr/local/juicer/conf
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-      - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/core-site.xml:/usr/local/juicer/conf/core-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/yarn-site.xml:/usr/local/juicer/conf/yarn-site.xml
+      - /home/hadoop/hadoop/etc/hadoop/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
       - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
@@ -100,11 +106,13 @@ services:
       - default
     restart: always
     # Uncomment next lines if you are connecting to an external spark cluster
-    #ports:
-    #  - '37100-37399:37100-37399'
+    # ports:
+      # - '37100-37300:37100-37300'
+      # - '35100-35300:35100-35300'  
+
   juicer_worker:
     build: ./juicer
-    image: eubrabigsea/juicer:2.0
+    image: eubrabigsea/juicer:2.4.0
     entrypoint:
       - "rq"
       - "worker"
@@ -120,7 +128,7 @@ services:
 
   citrus:
     build: ./citrus
-    image: eubrabigsea/citrus:2.0
+    image: eubrabigsea/citrus:2.4.0
     ports:
       - '23456:8080'
     volumes:
@@ -128,28 +136,30 @@ services:
     networks:
       - default
     restart: always
-#   seed:
-#     build: ./seed
-#     image: eubrabigsea/seed:2.0
-#     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-#     networks:
-#       - default
-#     restart: always
-# 
-#   seed_worker:
-#     build: ./seed
-#     image: eubrabigsea/seed
-#     entrypoint: 
-#       - "/usr/bin/dumb-init"
-#       - "--"
-#       - "/usr/local/bin/entrypoint"
-#       - "worker"
-#     volumes:
-#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed.yaml
-#     networks:
-#       - default
-#     restart: always
+
+  seed:
+    build: ./seed
+    image: eubrabigsea/seed:2.4.0
+    volumes:
+      - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
+    networks:
+      - default
+    restart: always
+
+  seed_worker:
+    build: ./seed
+    image: eubrabigsea/seed:2.4.0
+    entrypoint: 
+      - "/usr/bin/dumb-init"
+      - "--"
+      - "/usr/local/bin/entrypoint"
+      - "worker"
+    volumes:
+      - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
+    networks:
+      - default
+    restart: always
 
 networks:
   default:
+          
