@@ -12,6 +12,7 @@ cd docker-lemonade
 Update project dependencies:
 ```
 git submodule update --init --checkout
+git submodule update --remote
 ```
 
 Running docker hub available containers
