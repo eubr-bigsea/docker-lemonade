@@ -118,12 +118,12 @@ services:
       - type: bind
         source: /srv/lemonade/storage
         target: /srv/storage
-      - type: bind
-        source: ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar
-        target: /usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
-      - type: bind
-        source: ./spark-fairness/target/spark-fairness_2.11-1.0.jar
-        target: /usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
+      #- type: bind
+      #  source: ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar
+      #  target: /usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
+      #- type: bind
+      #  source: ./spark-fairness/target/spark-fairness_2.11-1.0.jar
+      #  target: /usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
     networks:
       - default
     restart: always
