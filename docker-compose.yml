@@ -16,7 +16,7 @@ services:
         aliases: [lemonade_db, db]
     restart: on-failure
     ports:
-    - 33062:3306
+    - 23062:3306
 
   redis:
     image: redis:4
@@ -96,9 +96,7 @@ services:
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-      - /home/hadoop/hadoop/etc/hadoop/core-site.xml:/usr/local/juicer/conf/core-site.xml
-      - /home/hadoop/hadoop/etc/hadoop/yarn-site.xml:/usr/local/juicer/conf/yarn-site.xml
-      - /home/hadoop/hadoop/etc/hadoop/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
       - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
@@ -130,7 +128,7 @@ services:
     build: ./citrus
     image: eubrabigsea/citrus:2.4.0
     ports:
-      - '23456:8080'
+      - '13456:8080'
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
