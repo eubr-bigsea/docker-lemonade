@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D3.js with Flask</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
+    <script>
+        // Set the data for the chart
+        var data = {{data}};
+
+        // Create the SVG canvas
+        var svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", 400)
+            .attr("height", 200);
+
+        // Create the bars for the chart
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", function(d, i) {
+                return i * 50;
+            })
+            .attr("y", function(d) {
+                return 200 - d * 5;
+            })
+            .attr("width", 40)
+            .attr("height", function(d) {
+                return d * 5;
+            });
+    </script>
+</body>
+</html>

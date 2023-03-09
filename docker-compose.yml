@@ -65,6 +65,9 @@ services:
       - type: bind
         source: /srv/lemonade/storage
         target: /srv/storage
+      - type: bind
+        source: ./limonero
+        target: /usr/local/limonero
     networks:
       - default
     restart: always
@@ -98,6 +101,9 @@ services:
       - type: bind 
         source: ./config/tahiti-config.yaml
         target: /usr/local/tahiti/conf/tahiti-config.yaml
+      - type: bind 
+        source: ./tahiti
+        target: /usr/local/tahiti     
     networks:
       - default
     restart: always
@@ -105,6 +111,7 @@ services:
   juicer:
     build: ./juicer
     image: eubrabigsea/juicer
+    #image: juicer_test:latest
     environment:
       - HADOOP_CONF_DIR=/usr/local/juicer/conf
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
@@ -118,6 +125,9 @@ services:
       - type: bind
         source: /srv/lemonade/storage
         target: /srv/storage
+      - type: bind
+        source: ./juicer
+        target: /usr/local/juicer
       #- type: bind
       #  source: ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar
       #  target: /usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar

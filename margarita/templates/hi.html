@@ -1,0 +1,205 @@
+
+
+<style>
+
+</style>
+
+<div id="fig_el232721400040398739521215878466"></div>
+<script>
+function mpld3_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(mpld3) !== "undefined" && mpld3._mpld3IsLoaded){
+   // already loaded: just create the figure
+   !function(mpld3){
+       
+    mpld3.register_plugin("drag", DragPlugin);
+    DragPlugin.prototype = Object.create(mpld3.Plugin.prototype);
+    DragPlugin.prototype.constructor = DragPlugin;
+    DragPlugin.prototype.requiredProps = ["idpts", "idline", "idpatch"];
+    DragPlugin.prototype.defaultProps = {}
+    function DragPlugin(fig, props){
+        mpld3.Plugin.call(this, fig, props);
+    };
+
+    DragPlugin.prototype.draw = function(){
+        var patchobj = mpld3.get_element(this.props.idpatch, this.fig);
+        var ptsobj = mpld3.get_element(this.props.idpts, this.fig);
+        var lineobj = mpld3.get_element(this.props.idline, this.fig);
+
+        var drag = d3.drag()
+            .subject(function(d) { return {x:ptsobj.ax.x(d[0]),
+                                          y:ptsobj.ax.y(d[1])}; })
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+
+        lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+        patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                  patchobj.pathcodes));
+        lineobj.data = ptsobj.offsets;
+        patchobj.data = ptsobj.offsets;
+
+        ptsobj.elements()
+           .data(ptsobj.offsets)
+           .style("cursor", "default")
+           .call(drag);
+
+        function dragstarted(d) {
+          d3.event.sourceEvent.stopPropagation();
+          d3.select(this).classed("dragging", true);
+        }
+
+        function dragged(d, i) {
+          d[0] = ptsobj.ax.x.invert(d3.event.x);
+          d[1] = ptsobj.ax.y.invert(d3.event.y);
+          d3.select(this)
+            .attr("transform", "translate(" + [d3.event.x,d3.event.y] + ")");
+          lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+          patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                    patchobj.pathcodes));
+        }
+
+        function dragended(d, i) {
+          d3.select(this).classed("dragging", false);
+        }
+    }
+
+    mpld3.register_plugin("drag", DragPlugin);
+    
+       mpld3.draw_figure("fig_el232721400040398739521215878466", {"width": 640.0, "height": 480.0, "axes": [{"bbox": [0.125, 0.10999999999999999, 0.775, 0.77], "xlim": [-3.633809523809524, 4.883809523809524], "ylim": [-2.8585, 3.4885], "xdomain": [-3.633809523809524, 4.883809523809524], "ydomain": [-2.8585, 3.4885], "xscale": "linear", "yscale": "linear", "axes": [{"position": "bottom", "nticks": 10, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}, {"position": "left", "nticks": 8, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}], "axesbg": "#FFFFFF", "axesbgalpha": null, "zoomable": true, "id": "el23272140003643388976", "lines": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643869504", "color": "#000000", "linewidth": 1.5, "dasharray": "none", "alpha": 1, "zorder": 2, "drawstyle": "default"}], "paths": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "pathcodes": ["M", "C", "L", "C", "Z"], "id": "el23272140003652509392", "dasharray": "none", "alpha": 0.5, "facecolor": "rgba(255, 0, 0, 0.5)", "edgecolor": "rgba(0, 0, 0, 0.5)", "edgewidth": 1.0, "zorder": 1}], "markers": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643868784pts", "facecolor": "#007F00", "edgecolor": "#007F00", "edgewidth": 1.0, "alpha": 1, "zorder": 2, "markerpath": [[[0.0, 5.0], [1.3260155, 5.0], [2.597899353924267, 4.473168457941209], [3.5355339059327378, 3.5355339059327378], [4.473168457941209, 2.597899353924267], [5.0, 1.3260155], [5.0, 0.0], [5.0, -1.3260155], [4.473168457941209, -2.597899353924267], [3.5355339059327378, -3.5355339059327378], [2.597899353924267, -4.473168457941209], [1.3260155, -5.0], [0.0, -5.0], [-1.3260155, -5.0], [-2.597899353924267, -4.473168457941209], [-3.5355339059327378, -3.5355339059327378], [-4.473168457941209, -2.597899353924267], [-5.0, -1.3260155], [-5.0, 0.0], [-5.0, 1.3260155], [-4.473168457941209, 2.597899353924267], [-3.5355339059327378, 3.5355339059327378], [-2.597899353924267, 4.473168457941209], [-1.3260155, 5.0], [0.0, 5.0]], ["M", "C", "C", "C", "C", "C", "C", "C", "C", "Z"]]}], "texts": [{"text": "Drag Points to Change Path", "position": [0.5, 1.0225468975468974], "coordinates": "axes", "h_anchor": "middle", "v_baseline": "auto", "rotation": -0.0, "fontsize": 18.0, "color": "#000000", "alpha": 1, "zorder": 3, "id": "el23272140003643532208"}], "collections": [], "images": [], "sharex": [], "sharey": []}], "data": {"data01": [[1.58, -2.57], [0.35, -1.1], [-1.75, 2.0], [0.375, 2.0], [0.85, 1.15], [2.2, 3.2], [3.0, 0.05], [2.0, -0.5]]}, "id": "el23272140004039873952", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}, {"type": "drag", "idpts": "el23272140003643868784pts", "idline": "el23272140003643869504", "idpatch": "el23272140003652509392"}]});
+   }(mpld3);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/mpld3
+   require.config({paths: {d3: "https://d3js.org/d3.v5"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      mpld3_load_lib("https://mpld3.github.io/js/mpld3.v0.5.9.js", function(){
+         
+    mpld3.register_plugin("drag", DragPlugin);
+    DragPlugin.prototype = Object.create(mpld3.Plugin.prototype);
+    DragPlugin.prototype.constructor = DragPlugin;
+    DragPlugin.prototype.requiredProps = ["idpts", "idline", "idpatch"];
+    DragPlugin.prototype.defaultProps = {}
+    function DragPlugin(fig, props){
+        mpld3.Plugin.call(this, fig, props);
+    };
+
+    DragPlugin.prototype.draw = function(){
+        var patchobj = mpld3.get_element(this.props.idpatch, this.fig);
+        var ptsobj = mpld3.get_element(this.props.idpts, this.fig);
+        var lineobj = mpld3.get_element(this.props.idline, this.fig);
+
+        var drag = d3.drag()
+            .subject(function(d) { return {x:ptsobj.ax.x(d[0]),
+                                          y:ptsobj.ax.y(d[1])}; })
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+
+        lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+        patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                  patchobj.pathcodes));
+        lineobj.data = ptsobj.offsets;
+        patchobj.data = ptsobj.offsets;
+
+        ptsobj.elements()
+           .data(ptsobj.offsets)
+           .style("cursor", "default")
+           .call(drag);
+
+        function dragstarted(d) {
+          d3.event.sourceEvent.stopPropagation();
+          d3.select(this).classed("dragging", true);
+        }
+
+        function dragged(d, i) {
+          d[0] = ptsobj.ax.x.invert(d3.event.x);
+          d[1] = ptsobj.ax.y.invert(d3.event.y);
+          d3.select(this)
+            .attr("transform", "translate(" + [d3.event.x,d3.event.y] + ")");
+          lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+          patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                    patchobj.pathcodes));
+        }
+
+        function dragended(d, i) {
+          d3.select(this).classed("dragging", false);
+        }
+    }
+
+    mpld3.register_plugin("drag", DragPlugin);
+    
+         mpld3.draw_figure("fig_el232721400040398739521215878466", {"width": 640.0, "height": 480.0, "axes": [{"bbox": [0.125, 0.10999999999999999, 0.775, 0.77], "xlim": [-3.633809523809524, 4.883809523809524], "ylim": [-2.8585, 3.4885], "xdomain": [-3.633809523809524, 4.883809523809524], "ydomain": [-2.8585, 3.4885], "xscale": "linear", "yscale": "linear", "axes": [{"position": "bottom", "nticks": 10, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}, {"position": "left", "nticks": 8, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}], "axesbg": "#FFFFFF", "axesbgalpha": null, "zoomable": true, "id": "el23272140003643388976", "lines": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643869504", "color": "#000000", "linewidth": 1.5, "dasharray": "none", "alpha": 1, "zorder": 2, "drawstyle": "default"}], "paths": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "pathcodes": ["M", "C", "L", "C", "Z"], "id": "el23272140003652509392", "dasharray": "none", "alpha": 0.5, "facecolor": "rgba(255, 0, 0, 0.5)", "edgecolor": "rgba(0, 0, 0, 0.5)", "edgewidth": 1.0, "zorder": 1}], "markers": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643868784pts", "facecolor": "#007F00", "edgecolor": "#007F00", "edgewidth": 1.0, "alpha": 1, "zorder": 2, "markerpath": [[[0.0, 5.0], [1.3260155, 5.0], [2.597899353924267, 4.473168457941209], [3.5355339059327378, 3.5355339059327378], [4.473168457941209, 2.597899353924267], [5.0, 1.3260155], [5.0, 0.0], [5.0, -1.3260155], [4.473168457941209, -2.597899353924267], [3.5355339059327378, -3.5355339059327378], [2.597899353924267, -4.473168457941209], [1.3260155, -5.0], [0.0, -5.0], [-1.3260155, -5.0], [-2.597899353924267, -4.473168457941209], [-3.5355339059327378, -3.5355339059327378], [-4.473168457941209, -2.597899353924267], [-5.0, -1.3260155], [-5.0, 0.0], [-5.0, 1.3260155], [-4.473168457941209, 2.597899353924267], [-3.5355339059327378, 3.5355339059327378], [-2.597899353924267, 4.473168457941209], [-1.3260155, 5.0], [0.0, 5.0]], ["M", "C", "C", "C", "C", "C", "C", "C", "C", "Z"]]}], "texts": [{"text": "Drag Points to Change Path", "position": [0.5, 1.0225468975468974], "coordinates": "axes", "h_anchor": "middle", "v_baseline": "auto", "rotation": -0.0, "fontsize": 18.0, "color": "#000000", "alpha": 1, "zorder": 3, "id": "el23272140003643532208"}], "collections": [], "images": [], "sharex": [], "sharey": []}], "data": {"data01": [[1.58, -2.57], [0.35, -1.1], [-1.75, 2.0], [0.375, 2.0], [0.85, 1.15], [2.2, 3.2], [3.0, 0.05], [2.0, -0.5]]}, "id": "el23272140004039873952", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}, {"type": "drag", "idpts": "el23272140003643868784pts", "idline": "el23272140003643869504", "idpatch": "el23272140003652509392"}]});
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & mpld3
+    mpld3_load_lib("https://d3js.org/d3.v5.js", function(){
+         mpld3_load_lib("https://mpld3.github.io/js/mpld3.v0.5.9.js", function(){
+                 
+    mpld3.register_plugin("drag", DragPlugin);
+    DragPlugin.prototype = Object.create(mpld3.Plugin.prototype);
+    DragPlugin.prototype.constructor = DragPlugin;
+    DragPlugin.prototype.requiredProps = ["idpts", "idline", "idpatch"];
+    DragPlugin.prototype.defaultProps = {}
+    function DragPlugin(fig, props){
+        mpld3.Plugin.call(this, fig, props);
+    };
+
+    DragPlugin.prototype.draw = function(){
+        var patchobj = mpld3.get_element(this.props.idpatch, this.fig);
+        var ptsobj = mpld3.get_element(this.props.idpts, this.fig);
+        var lineobj = mpld3.get_element(this.props.idline, this.fig);
+
+        var drag = d3.drag()
+            .subject(function(d) { return {x:ptsobj.ax.x(d[0]),
+                                          y:ptsobj.ax.y(d[1])}; })
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+
+        lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+        patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                  patchobj.pathcodes));
+        lineobj.data = ptsobj.offsets;
+        patchobj.data = ptsobj.offsets;
+
+        ptsobj.elements()
+           .data(ptsobj.offsets)
+           .style("cursor", "default")
+           .call(drag);
+
+        function dragstarted(d) {
+          d3.event.sourceEvent.stopPropagation();
+          d3.select(this).classed("dragging", true);
+        }
+
+        function dragged(d, i) {
+          d[0] = ptsobj.ax.x.invert(d3.event.x);
+          d[1] = ptsobj.ax.y.invert(d3.event.y);
+          d3.select(this)
+            .attr("transform", "translate(" + [d3.event.x,d3.event.y] + ")");
+          lineobj.path.attr("d", lineobj.datafunc(ptsobj.offsets));
+          patchobj.path.attr("d", patchobj.datafunc(ptsobj.offsets,
+                                                    patchobj.pathcodes));
+        }
+
+        function dragended(d, i) {
+          d3.select(this).classed("dragging", false);
+        }
+    }
+
+    mpld3.register_plugin("drag", DragPlugin);
+    
+                 mpld3.draw_figure("fig_el232721400040398739521215878466", {"width": 640.0, "height": 480.0, "axes": [{"bbox": [0.125, 0.10999999999999999, 0.775, 0.77], "xlim": [-3.633809523809524, 4.883809523809524], "ylim": [-2.8585, 3.4885], "xdomain": [-3.633809523809524, 4.883809523809524], "ydomain": [-2.8585, 3.4885], "xscale": "linear", "yscale": "linear", "axes": [{"position": "bottom", "nticks": 10, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}, {"position": "left", "nticks": 8, "tickvalues": null, "tickformat_formatter": "", "tickformat": null, "scale": "linear", "fontsize": 10.0, "grid": {"gridOn": true, "color": "#808080", "dasharray": "none", "alpha": 0.5}, "visible": true}], "axesbg": "#FFFFFF", "axesbgalpha": null, "zoomable": true, "id": "el23272140003643388976", "lines": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643869504", "color": "#000000", "linewidth": 1.5, "dasharray": "none", "alpha": 1, "zorder": 2, "drawstyle": "default"}], "paths": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "pathcodes": ["M", "C", "L", "C", "Z"], "id": "el23272140003652509392", "dasharray": "none", "alpha": 0.5, "facecolor": "rgba(255, 0, 0, 0.5)", "edgecolor": "rgba(0, 0, 0, 0.5)", "edgewidth": 1.0, "zorder": 1}], "markers": [{"data": "data01", "xindex": 0, "yindex": 1, "coordinates": "data", "id": "el23272140003643868784pts", "facecolor": "#007F00", "edgecolor": "#007F00", "edgewidth": 1.0, "alpha": 1, "zorder": 2, "markerpath": [[[0.0, 5.0], [1.3260155, 5.0], [2.597899353924267, 4.473168457941209], [3.5355339059327378, 3.5355339059327378], [4.473168457941209, 2.597899353924267], [5.0, 1.3260155], [5.0, 0.0], [5.0, -1.3260155], [4.473168457941209, -2.597899353924267], [3.5355339059327378, -3.5355339059327378], [2.597899353924267, -4.473168457941209], [1.3260155, -5.0], [0.0, -5.0], [-1.3260155, -5.0], [-2.597899353924267, -4.473168457941209], [-3.5355339059327378, -3.5355339059327378], [-4.473168457941209, -2.597899353924267], [-5.0, -1.3260155], [-5.0, 0.0], [-5.0, 1.3260155], [-4.473168457941209, 2.597899353924267], [-3.5355339059327378, 3.5355339059327378], [-2.597899353924267, 4.473168457941209], [-1.3260155, 5.0], [0.0, 5.0]], ["M", "C", "C", "C", "C", "C", "C", "C", "C", "Z"]]}], "texts": [{"text": "Drag Points to Change Path", "position": [0.5, 1.0225468975468974], "coordinates": "axes", "h_anchor": "middle", "v_baseline": "auto", "rotation": -0.0, "fontsize": 18.0, "color": "#000000", "alpha": 1, "zorder": 3, "id": "el23272140003643532208"}], "collections": [], "images": [], "sharex": [], "sharey": []}], "data": {"data01": [[1.58, -2.57], [0.35, -1.1], [-1.75, 2.0], [0.375, 2.0], [0.85, 1.15], [2.2, 3.2], [3.0, 0.05], [2.0, -0.5]]}, "id": "el23272140004039873952", "plugins": [{"type": "reset"}, {"type": "zoom", "button": true, "enabled": false}, {"type": "boxzoom", "button": true, "enabled": false}, {"type": "drag", "idpts": "el23272140003643868784pts", "idline": "el23272140003643869504", "idpatch": "el23272140003652509392"}]});
+            })
+         });
+}
+</script>

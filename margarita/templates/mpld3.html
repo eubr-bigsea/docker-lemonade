@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Plot</title>
+  <script src="{{ url_for('static', filename='https://d3js.org/d3.v5.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='https://mpld3.github.io/js/mpld3.v0.5.2.min.j') }}"></script>
+
+</head>
+<body>
+  <div id="figure"></div>
+
+
+  <script type="text/javascript">
+    var json_data = {{json_data|safe}};
+    var figure = mpld3.draw_figure("figure", json_data);
+  </script>
+</body>
+</html>
