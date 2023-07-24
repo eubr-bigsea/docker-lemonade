@@ -1,0 +1,84 @@
+18/07/2023 14:44:59 - INFO - http//test.com
+18/07/2023 14:44:59 - INFO - http//test.com
+18/07/2023 14:45:12 - INFO - http//test.com
+18/07/2023 14:45:12 - INFO - http//test.com
+18/07/2023 14:49:13 - DEBUG - http//test.com
+18/07/2023 14:49:13 - DEBUG - http//test.com
+18/07/2023 14:53:32 - DEBUG - //srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 14:53:32 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 16:08:12 - DEBUG - //srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 16:08:12 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 16:12:26 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 16:12:26 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 16:54:31 - ERROR - class XaiLoadResource tried load model dt_cls_small_tree.0000, but this model doesnt exist!!
+18/07/2023 16:54:31 - ERROR - class XaiLoadResource tried load model dt_cls_small_tree.0000, but this model doesnt exist!!
+18/07/2023 17:15:31 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:15:31 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:15:31 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:15:31 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:29:08 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:29:08 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:29:08 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:29:08 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:29:38 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:29:38 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:29:38 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:29:38 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:33:47 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:33:47 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 17:33:47 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:33:47 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 17:33:47 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 17:33:47 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 18:36:23 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 18:36:23 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 18:36:23 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 18:36:23 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 18:36:23 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 18:36:23 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 18:36:23 - DEBUG - dt_surface
+18/07/2023 18:36:23 - DEBUG - dt_surface
+18/07/2023 18:36:44 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 18:36:44 - DEBUG - file:///srv/storage//limonero/models/dt_cls_small_tree.0000
+18/07/2023 18:36:44 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 18:36:44 - DEBUG - file:/srv/storage/srv/storage/limonero/data/dc1875c669fd4d9fb7b95959df621509_transfusion.csv
+18/07/2023 18:36:44 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 18:36:44 - DEBUG - [0.22074046 0.         0.20962974 0.5696298 ]
+18/07/2023 18:36:44 - DEBUG - feature_importance
+18/07/2023 18:36:44 - DEBUG - feature_importance
+18/07/2023 18:40:06 - DEBUG - dt_surface
+18/07/2023 18:40:06 - DEBUG - dt_surface
+18/07/2023 18:40:32 - DEBUG - feature_importance
+18/07/2023 18:40:32 - DEBUG - feature_importance
+18/07/2023 18:48:49 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 18:48:49 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 18:50:06 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 18:50:06 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 18:52:37 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 18:52:37 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 18:57:20 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 18:57:20 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 18:59:06 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 18:59:06 - DEBUG - {'dt_surface': {'max_deep': 4}}
+18/07/2023 19:33:08 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:33:08 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:50:54 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:50:54 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:50:54 - DEBUG - {'forest_importance': {'n_feature': 3}}
+18/07/2023 19:50:54 - DEBUG - {'forest_importance': {'n_feature': 3}}
+18/07/2023 19:51:59 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:51:59 - DEBUG - {'feature_importance': {'n_feature': 3}}
+18/07/2023 19:51:59 - DEBUG - {'forest_importance': {'n_feature': 3}}
+18/07/2023 19:51:59 - DEBUG - {'forest_importance': {'n_feature': 3}}
+19/07/2023 08:19:18 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 08:19:18 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 08:19:18 - DEBUG - {'forest_importance': {'n_feature': 3}}
+19/07/2023 08:19:18 - DEBUG - {'forest_importance': {'n_feature': 3}}
+19/07/2023 08:20:50 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 08:20:50 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 08:20:50 - DEBUG - {'forest_importance': {'n_feature': 3}}
+19/07/2023 08:20:50 - DEBUG - {'forest_importance': {'n_feature': 3}}
+19/07/2023 09:38:44 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 09:38:44 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 09:38:44 - DEBUG - {'feature_importance': {'n_feature': 3}}
+19/07/2023 09:38:44 - DEBUG - {'feature_importance': {'n_feature': 3}}

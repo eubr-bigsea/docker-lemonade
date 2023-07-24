@@ -1,0 +1,254 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+Auto-generated Explainable AI code from Lemonade Workflow
+(c) Speed Labs - Departamento de Ciência da Computação
+    Universidade Federal de Minas Gerais
+More information about Lemonade to be provided
+"""
+
+import datetime
+import decimal
+import functools
+import pyarrow as pa
+import os
+import re
+import json
+import simplejson
+import string
+import sys
+import time
+import unicodedata
+import numpy as np
+import modin.pandas as pd
+import functools
+import threading
+import nltk
+from nltk.stem import SnowballStemmer, WordNetLemmatizer
+from wordsegment import load, segment
+from concurrent.futures import ThreadPoolExecutor
+from timeit import default_timer as timer
+from juicer.util import dataframe_util
+
+from juicer.spark.reports import *
+import traceback
+
+{% autopep8 %}
+
+{%- for imps in transpiler.imports %}
+{{imps}}
+{%- endfor %}
+
+{%- if transpiler.custom_functions %}
+# Custom functions
+{%- for code in transpiler.custom_functions.values() %}
+{{code}}
+{%- endfor -%}
+# End custom functions
+{%- endif %}
+
+def explainable_ai_logging(msg):
+    print(msg)
+
+executor = ThreadPoolExecutor(max_workers=3*{{instances|length}})
+submission_lock = threading.Lock()
+task_futures = {}
+
+{%- for instance in instances %}
+{%-  handleinstance instance %}
+{%- if instance.has_code and instance.enabled %}
+{%- set task = instance.parameters.task %}
+{%- set task_id = task.id %}
+
+
+# noinspection PyUnusedLocal
+def {{task.operation.slug.replace('-', '_')}}_{{instance.order}}(explainable_ai_session, cached_state, emit_event):
+    """
+    {%- if task.forms.comment and task.forms.comment.value %}
+    {{task.forms.comment.value.strip().replace('"', '')}}
+    {%- else %}
+    Operation {{task_id }}
+    {%- endif %}
+    Task hash: {{instance.parameters.hash}}.
+    """
+    task_id = '{{task_id}}'
+
+    metadata_list = [{'is_important': False, 'slug': '{{task.operation.slug}}', 'task_id': '{{task_id}}'}]
+
+    {%- if task.parents %}
+
+    # If the task's result is not cached, we submit its dependencies first
+    {%- set parents = transpiler._get_parent_tasks(instances_by_task_id, instance) %}
+    {%- for parent_id, method in parents %}
+    parent_id = '{{parent_id}}'
+    if parent_id not in task_futures:
+        task_futures[parent_id] = executor.submit(
+                lambda: {{method}}(explainable_ai_session, cached_state, emit_event))
+    {%- endfor %}
+    {%- endif %}
+
+    {%- if parents %}
+    # Next we wait for the dependencies to complete
+    {%- for parent_id, method in parents %}
+    {%- set parent_instance = instances_by_task_id[parent_id] %}
+    {%- if parent_instance.get_output_names(", ") %}
+    parent_result = task_futures['{{parent_id}}'].result()
+    {%- for port_name,out in zip(parent_instance.parameters.task.port_names, parent_instance.get_output_names(',').split(','))%}
+    {{out}} = parent_result['{{port_name}}']
+    {%- endfor %}
+    ts_{{parent_instance.output}} = parent_result['time']
+    metadata_list += parent_result['metadata']
+    {% endif %}
+    {%- endfor %}
+
+    {%- endif %}
+
+    {%- if not plain and transpiler.transpiler.verbosity >= 10 %}
+    emit_task_running(task_id, explainable_ai_session, emit_event)
+    {%- endif %}
+
+    start = timer()
+    # First we verify whether this task's result is cached.
+    results = {% if instance.supports_cache -%}
+    get_cached_state(
+        task_id, cached_state, emit_event, explainable_ai_session,
+        '{{instance.parameters.hash}}', {{transpiler.transpiler.verbosity}})
+    {% else %} None
+    {%- endif %}
+    if results is None:
+        # --- Begin operation code ---- #
+        {{instance.generate_code().strip() | indent(width=8, indentfirst=False)}}
+        # --- End operation code ---- #
+        {%- if not plain %}
+        {%- for gen_result in instance.get_generated_results() %}
+        emit_event(name='task result', message=_('{{gen_result.type}}'),
+                   status='COMPLETED',
+                   identifier='{{task.operation.id}}/{{task_id}}')
+        {%- endfor %}
+        {%- endif %}
+
+        results = {
+            'task_name': '{{task.name}}',
+            'metadata': metadata_list,
+          {%- set is_leaf = instance.out_degree == 0 %}
+          {%- for port_name, out in zip(task.port_names, instance.get_output_names(',').split(',')) %}
+            {%- if port_name and out %}
+             '{{port_name}}': {{out}},
+            {%- endif %}
+            {%-if loop.index0 == 0 and out%}
+             '__first__': {{out}},
+            {%- endif %}
+          {%- endfor %}
+        }
+    {%- if instance.contains_results() %}
+    outputs = [(name, out) for name, out in results.items()
+        if isinstance(out, pd.DataFrame) and not name.startswith('__')]
+    {%- if instance.has_code and instance.enabled and instance.contains_sample %}
+    size, infer, describe, use_types = {{ instance.sample_configuration.get_config() }}
+    for name, out in outputs:
+        dataframe_util.emit_sample_explainable_ai(task_id, out, emit_event, name,
+            size=size, infer=infer, describe=describe, use_types=use_types)
+    {%- endif %}
+    {%- if instance.has_code and instance.enabled and instance.contains_schema %}
+    for name, out in outputs:
+        dataframe_util.emit_schema_explainable_ai(task_id, out, emit_event, name)
+    {%- endif %}
+    {%- endif %}
+
+
+    {%- if not plain and transpiler.transpiler.verbosity >= 10 %}
+    emit_task_completed(task_id, explainable_ai_session, emit_event)
+    {%- endif %}
+
+    results['time'] = timer() - start
+    return results
+
+
+{%- endif %}
+{%- endhandleinstance %}
+{% endfor %}
+
+def emit_task_running(task_id, explainable_ai_session, emit_event):
+    emit_event(name='update task', message=_('Task running'), status='RUNNING',
+               identifier=task_id)
+
+def emit_task_completed(task_id, explainable_ai_session, emit_event):
+    emit_event(name='update task', message=_('Task completed'),
+               status='COMPLETED', identifier=task_id)
+
+def get_results(_task_futures, task_id):
+    return _task_futures[task_id].result() if task_id in _task_futures else None
+
+def get_cached_state(task_id, cached_state, emit_event, spark_session,
+                     task_hash, verbosity=10):
+    results = None
+    if task_id in cached_state:
+        cached, _hash = cached_state.get(task_id)
+        if _hash == task_hash and verbosity >= 10:
+            emit_event(name='update task',
+                message=_('Task running (cached data)'), status='RUNNING',
+                identifier=task_id)
+            results = cached
+    return results
+
+def main(explainable_ai_session, cached_state, emit_event):
+    """ Run generated code """
+
+    try:
+        {%- for instance in instances %}
+        {%- if instance.has_code and instance.enabled and instance.multiple_inputs %}
+        {{instance.get_inputs_names.replace(',', '=') }} = None
+        {%- endif %}
+        {%- endfor %}
+
+        {%- set ids_and_methods = transpiler.get_ids_and_methods(instances) %}
+        {%- for task_id, method in ids_and_methods.items() %}
+        task_futures['{{task_id}}'] = executor.submit(
+            lambda: {{method}}(explainable_ai_session, cached_state, emit_event))
+        {%- endfor %}
+
+        {%- for task_id in ids_and_methods.keys() %}
+        {%- set s = dependency_controller.satisfied(task_id) %}
+        task_futures['{{task_id}}'].result()
+        {%- endfor %}
+        {%- for disabled in transpiler.get_disabled_tasks(instances) %}
+        emit_event(name='update task', message=_(
+            'Task completed, but not executed (not used in the workflow).'),
+            status='COMPLETED',
+            identifier='{{disabled.parameters.task.id}}')
+        {%- endfor %}
+
+        {%- for disabled in disabled_tasks %}
+        emit_event(name='update task', message=_(
+            'Task completed, but not executed (not used in the workflow).'),
+            status='COMPLETED', identifier='{{disabled}}')
+        {%- endfor %}
+
+        return {
+            'status': 'OK',
+            'message': 'Execution defined',
+            {%- for instance in transpiler._get_enabled_tasks(instances) %}
+            '{{instance.parameters.task.id}}':
+                [get_results(task_futures,
+                '{{instance.parameters.task.id}}'),
+                '{{instance.parameters.hash}}'],
+            {%- endfor %}
+        }
+    except Exception as e:
+        traceback.print_exc(file=sys.stderr)
+        raise
+
+{%- if execute_main %}
+
+def dummy_emit_event(room, namespace):
+    def _dummy_emit_event(name, message, status, identifier, **kwargs):
+        return None
+    return _dummy_emit_event
+
+explainable_ai_session = "Explainable AI"
+#TO DO: LOGLEVEL
+main(explainable_ai_session, {}, dummy_emit_event(room=-1, namespace='/none'))
+
+{%- endif %}
+
+{% endautopep8 %}

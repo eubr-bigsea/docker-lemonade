@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+
+  app_xai:
+    build: ./xai_application
+    image: xai_app
+    ports:
+      - 5000:5000
+    volumes:
+      - ./xai_application:/app
+      - /srv/lemonade/storage/srv/storage/limonero/data:/data
+      - /srv/lemonade/storage/limonero/models:/models
+
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  worker_xai:
+    build: './xai_worker'
+    volumes:
+      - ./xai_worker:/app
+      - /srv/lemonade/storage/srv/storage/limonero/data:/data
+      - /srv/lemonade/storage/limonero/models:/models
+    depends_on:
+      - rabbit
+      - app_xai

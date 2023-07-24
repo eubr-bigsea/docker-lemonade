@@ -1,0 +1,7 @@
+numba==0.56.4
+shap==0.41.0
+pyoperon==0.3.4
+redis==3.5.3
+scikit-learn==1.2.2
+celery[redis]
+pandas==2.0.3
