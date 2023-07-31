@@ -7,7 +7,7 @@ seed:
     secret: 123456    
     deployment_port_range: [35000-39999]
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/seed?charset=utf8
+        database_url: mysql+pymysql://root:lemon@db/seed?charset=utf8
         redis_url: redis://redis:6379
     config:
         SQLALCHEMY_POOL_SIZE: 100

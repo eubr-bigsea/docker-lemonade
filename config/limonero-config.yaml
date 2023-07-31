@@ -5,7 +5,7 @@ limonero:
     port: 23402
     secret: 123456
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/limonero?charset=utf8
+        database_url: mysql+pymysql://root:lemon@db/limonero?charset=utf8
     services:
         thorn:
             url: http://thorn:3000

@@ -5,7 +5,7 @@ caipirinha:
     port: 23401
     secret: 123456
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/caipirinha?charset=utf8
+        database_url: mysql+pymysql://root:lemon@db/caipirinha?charset=utf8
     services:
         limonero:
             url: http://limonero:23402

@@ -5,7 +5,7 @@ tahiti:
     secret: 123456
     port: 23403
     servers:
-        database_url: mysql+pymysql://root:lemon@mysql/tahiti?charset=utf8
+        database_url: mysql+pymysql://root:lemon@db/tahiti?charset=utf8
     services:
         thorn:
             url: http://thorn:3000
