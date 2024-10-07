@@ -36,7 +36,6 @@ juicer:
         # local[k]:             Run locally with k worker threads
         # local[*]:             Run locally with as many worker threads as logical cores
         # spark://host:port:    Connect to Spark standalone cluster (default port 7077)
-        # mesos://host:port:    Connect to Mesos cluster (default port 5050)
         # yarn:                 Connect to Yarn cluster. Cluster location will be found based
         #                       on the HADOOP_CONF_DIR or YARN_CONF_DIR variable.
         spark.master: local[*]
@@ -51,10 +50,8 @@ juicer:
         spark.driver.bindAddress: 0.0.0.0
         spark.port.maxRetries: 200
         spark.broadcast.factory: org.apache.spark.broadcast.HttpBroadcastFactory
-        spark.mesos.executor.home: /opt/spark-2.3.1-bin-hadoop2.7
-        spark.mesos.rejectOfferDuration: 30s
-        spark.dynamicAllocation.enabled: true
-        spark.shuffle.service.enabled: true
+        # spark.dynamicAllocation.enabled: true
+        # spark.shuffle.service.enabled: true
 
 
         spark.localdir: /tmp
