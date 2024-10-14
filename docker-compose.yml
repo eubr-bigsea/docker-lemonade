@@ -12,17 +12,28 @@ services:
       - ./extras/initdb.d:/docker-entrypoint-initdb.d
       - /srv/lemonade/mysql-dev:/var/lib/mysql
     networks:
-      default:
+      local:
         aliases: [lemonade_db, db]
     restart: on-failure
     ports:
-    - 23062:3306
+    - 33062:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   redis:
     image: redis:4
     networks:
-      - default
+      - local
     restart: on-failure
+    ports:
+    - 36379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
 
   thorn:
     build: ./thorn
@@ -30,13 +41,18 @@ services:
     volumes:
       - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   thorn_worker:
     build: ./thorn
     image: eubrabigsea/thorn:2.4.0
-    entrypoint: 
+    entrypoint:
       - "/usr/bin/dumb-init"
       - "--"
       - "/usr/local/bin/entrypoint"
@@ -44,8 +60,11 @@ services:
     volumes:
       - ./config/thorn-config.yaml:/usr/local/thorn/conf/thorn-config.yaml
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      thorn:
+        condition: service_started
 
   limonero:
     build: ./limonero
@@ -56,8 +75,13 @@ services:
       - ./config/limonero-config.yaml:/usr/local/limonero/conf/limonero-config.yaml
       - /srv/lemonade/storage:/srv/storage
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   stand:
     build: ./stand
@@ -65,8 +89,31 @@ services:
     volumes:
       - ./config/stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  stand_worker:
+    build: ./stand
+    image: eubrabigsea/stand:2.4.0
+    working_dir: /usr/local/stand/
+    entrypoint: 
+      - "/usr/local/bin/python"
+      - "stand/scheduler/scheduler.py"
+    volumes:
+      - ./config/stand-config.yaml:/usr/local/stand/conf/stand-config.yaml
+    networks:
+      - local
+    environment:
+      - PYTHONPATH=.:/usr/local/stand/
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_started
 
   caipirinha:
     build: ./caipirinha
@@ -74,8 +121,13 @@ services:
     volumes:
       - ./config/caipirinha-config.yaml:/usr/local/caipirinha/conf/caipirinha-config.yaml
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   tahiti:
     build: ./tahiti
@@ -83,8 +135,13 @@ services:
     volumes:
       - ./config/tahiti-config.yaml:/usr/local/tahiti/conf/tahiti-config.yaml
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   juicer:
     build: ./juicer
@@ -92,21 +149,29 @@ services:
     environment:
       - HADOOP_USER_NAME=hadoop
       - PYSPARK_PYTHON=python3
-      - HADOOP_CONF_DIR=/usr/local/juicer/conf
     command: ["/usr/local/juicer/sbin/juicer-daemon.sh", "docker"]
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
-      - ./config/hdfs-site.xml:/usr/local/juicer/conf/hdfs-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
       - /srv/lemonade/storage:/srv/storage
       - ./lemonade-spark-ext/target/lemonade-spark-ext-1.0-SNAPSHOT.jar:/usr/local/juicer/jars/lemonade-spark-ext-1.0-SNAPSHOT.jar
       - ./spark-fairness/target/spark-fairness_2.11-1.0.jar:/usr/local/juicer/jars/spark-fairness_2.11-1.0.jar
+      - ./spark-2.4.5-bin-without-hadoop:/opt/spark-2.4.5-bin-without-hadoop/
+      - ./spark-3.4.2-bin-without-hadoop:/opt/spark-3.4.2-bin-without-hadoop/
     networks:
-      - default
+      - local
     restart: always
     # Uncomment next lines if you are connecting to an external spark cluster
-    # ports:
-      # - '37100-37300:37100-37300'
-      # - '35100-35300:35100-35300'  
+    ports:
+      - '4000-4050:4000-4050'
+      - '35000-35200:35000-35200'
+    stop_grace_period: 1s
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+   # network_mode: "host"
 
   juicer_worker:
     build: ./juicer
@@ -121,43 +186,57 @@ services:
     volumes:
       - ./config/juicer-config.yaml:/usr/local/juicer/conf/juicer-config.yaml
     networks:
-      - default
+      - local
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: always
 
   citrus:
     build: ./citrus
     image: eubrabigsea/citrus:2.4.0
     ports:
-      - '13456:8080'
+      - '23456:8080'
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - default
+      - local
     restart: always
+    depends_on:
+      thorn:
+        condition: service_started
+      tahiti:
+        condition: service_started
+      limonero:
+        condition: service_started
+      caipirinha:
+        condition: service_started
 
-  seed:
-    build: ./seed
-    image: eubrabigsea/seed:2.4.0
-    volumes:
-      - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
-    networks:
-      - default
-    restart: always
-
-  seed_worker:
-    build: ./seed
-    image: eubrabigsea/seed:2.4.0
-    entrypoint: 
-      - "/usr/bin/dumb-init"
-      - "--"
-      - "/usr/local/bin/entrypoint"
-      - "worker"
-    volumes:
-      - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
-    networks:
-      - default
-    restart: always
+#   seed:
+#     build: ./seed
+#     image: eubrabigsea/seed:2.4.0
+#     volumes:
+#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
+#     networks:
+#       - local
+#     restart: always
+#
+#   seed_worker:
+#     build: ./seed
+#     image: eubrabigsea/seed:2.4.0
+#     entrypoint:
+#       - "/usr/bin/dumb-init"
+#       - "--"
+#       - "/usr/local/bin/entrypoint"
+#       - "worker"
+#     volumes:
+#       - ./config/seed-config.yaml:/usr/local/seed/conf/seed-config.yaml
+#     networks:
+#       - local
+#     restart: always
 
 networks:
-  default:
-          
+  local:
+    enable_ipv6: false

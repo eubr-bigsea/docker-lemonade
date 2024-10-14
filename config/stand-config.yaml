@@ -13,7 +13,9 @@ stand:
         tahiti:
             url: http://tahiti:23403
             auth_token: '123456'
-           
+        stand:
+            url: http://stand:23404
+            auth_token: '123456'
     config:
         SQLALCHEMY_POOL_SIZE: 0
         SQLALCHEMY_POOL_RECYCLE: 60
